@@ -12,28 +12,28 @@
 
   <style>
     :root {
-      --bg: #0d1117;
-      --amber: #d97706;
-      --blue: #38bdf8;
-      --green: #22c55e;
-      --red: #ef4444;
-      --yellow: #facc15;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --surface: #161b22;
-      --border: #30363d;
+      --bg: #1c2138;
+      --amber: #FFE600;
+      --blue: #5ba4f5;
+      --green: #2ecc7a;
+      --red: #f5677a;
+      --yellow: #FFE600;
+      --text: #eef0f8;
+      --muted: #b0b8d8;
+      --surface: #252d4a;
+      --border: #36406a;
     }
 
     .reveal-viewport { background: var(--bg); }
     .reveal .slides { text-align: left; }
     .reveal { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); font-size: 26px; }
 
-    /* Gradient accent line */
+    /* Gradient accent line — amarelo MP */
     .reveal .slides section::before {
       content: '';
       display: block;
-      height: 3px;
-      background: linear-gradient(90deg, var(--amber), var(--blue));
+      height: 2px;
+      background: linear-gradient(90deg, var(--amber) 30%, var(--blue));
       border-radius: 2px;
       margin-bottom: 0.5rem;
     }
@@ -47,7 +47,7 @@
       font-weight: 700;
     }
     .reveal h1 { font-size: 2em; line-height: 1.1; }
-    .reveal h2 { font-size: 1.3em; color: var(--amber); margin-bottom: 0.35em; }
+    .reveal h2 { font-size: 1.3em; color: #ffffff; margin-bottom: 0.35em; border-left: 3px solid var(--amber); padding-left: 0.5em; }
     .reveal h3 { font-size: 0.95em; color: var(--blue); margin-bottom: 0.25em; }
     .reveal p { font-size: 0.78em; line-height: 1.45; color: var(--text); margin: 0.2em 0; }
     .reveal ul { list-style: none; padding: 0; margin: 0; }
@@ -96,14 +96,14 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-    .badge-critical { background: #7f1d1d; color: #fca5a5; }
-    .badge-medium   { background: #78350f; color: #fcd34d; }
-    .badge-low      { background: #14532d; color: #86efac; }
-    .badge-info     { background: #1e3a5f; color: #7dd3fc; }
+    .badge-critical { background: #5c1020; color: #ffb3bc; }
+    .badge-medium   { background: #3d3000; color: #ffe966; }
+    .badge-low      { background: #003d1f; color: #5de8a0; }
+    .badge-info     { background: #0d2666; color: #90c2ff; }
 
     /* Highlight box */
     .highlight-box {
-      background: linear-gradient(135deg, rgba(217,119,6,0.15), rgba(56,189,248,0.1));
+      background: linear-gradient(135deg, rgba(255,230,0,0.1), rgba(52,131,250,0.1));
       border: 1px solid var(--amber);
       border-radius: 6px;
       padding: 0.4em 0.8em;
@@ -130,7 +130,7 @@
     .reveal pre code { padding: 0.5em 0.8em; border-radius: 6px; max-height: 220px; overflow-y: auto; }
     .reveal code { font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; }
     .reveal p code, .reveal li code {
-      background: #1e2a3a; color: var(--blue);
+      background: #1a2545; color: #90c2ff;
       padding: 0.1em 0.4em; border-radius: 4px; font-size: 0.88em;
     }
 
@@ -175,14 +175,14 @@
 
     /* Terminal fake */
     .terminal {
-      background: #0a0f1a;
-      border: 1px solid #2563eb;
+      background: #131829;
+      border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
       font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
     }
     .terminal-bar {
-      background: #1c2333;
+      background: #1a2140;
       padding: 0.4em 0.8em;
       display: flex;
       align-items: center;
@@ -206,7 +206,7 @@
 
     /* Output review block */
     .review-block {
-      background: #0d1117;
+      background: #131829;
       border: 1px solid var(--border);
       border-radius: 6px;
       padding: 0.45em 0.7em;
@@ -254,8 +254,8 @@
 
     /* Prompt box */
     .prompt-box {
-      background: #0a0f1a;
-      border: 1px solid #2563eb;
+      background: #131829;
+      border: 1px solid var(--border);
       border-radius: 6px;
       padding: 0.4em 0.7em;
       font-size: 0.62em;
@@ -291,7 +291,7 @@
     <!-- ═══════════════════════════════════════════════════
          SLIDE 1 — CAPA
     ════════════════════════════════════════════════════ -->
-    <section class="title-slide" data-background-gradient="radial-gradient(ellipse at center, #161b22 0%, #0d1117 70%)">
+    <section class="title-slide" data-background-gradient="radial-gradient(ellipse at center, #252d4a 0%, #1c2138 70%)">
       <div style="margin-bottom: 0.8rem;">
         <span style="font-size:3em;">⚙️</span>
       </div>
@@ -671,7 +671,97 @@ Categorias: Contrato | Edge Case | Regra de Negócio | Dados/Segurança | Compor
     </section>
 
     <!-- ═══════════════════════════════════════════════════
-         SLIDE 9 — PRÓXIMOS PASSOS
+         SLIDE 9 — OUTRAS PERGUNTAS ÚTEIS
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>Outras perguntas que uso no review</h2>
+
+      <div class="cols-3" style="gap:0.6rem;">
+
+        <!-- MERMAID -->
+        <div style="display:flex; flex-direction:column; gap:0.4rem;">
+          <div class="card card-amber" style="padding:0.4em 0.7em;">
+            <h3 style="font-size:0.82em; margin-bottom:0.2em;">📊 Diagrama do fluxo</h3>
+            <div class="prompt-box" style="font-size:0.56em; padding:0.3em 0.55em; line-height:1.4;">
+              <span class="label" style="font-size:0.8em;">pergunta</span>
+              Gere um diagrama Mermaid do fluxo
+              desse código — entradas, decisões
+              e saídas possíveis.
+            </div>
+          </div>
+          <div class="card" style="padding:0.4em 0.7em; border-left:3px solid var(--amber);">
+            <span style="font-size:0.56em; color:var(--muted); display:block; margin-bottom:0.2em; text-transform:uppercase; letter-spacing:0.06em;">resposta</span>
+            <div style="background:#f0f0f4; border-radius:4px; padding:3px; text-align:center; overflow:hidden;">
+              <svg id="export-svg" width="100%" xmlns="http://www.w3.org/2000/svg" class="flowchart" style="height:185px;background:transparent;display:block;" viewBox="0 0 411.6015625 561.5625" role="graphics-document document" aria-roledescription="flowchart-v2"><style xmlns="http://www.w3.org/1999/xhtml">p {margin: 0;}</style><style>#export-svg{font-family:arial,sans-serif;font-size:14px;fill:#28253D;}#export-svg .edge-thickness-normal{stroke-width:2px;}#export-svg .edge-pattern-solid{stroke-dasharray:0;}#export-svg .marker{fill:#000000;stroke:#000000;}#export-svg .marker.cross{stroke:#000000;}#export-svg p{margin:0;}#export-svg .label{font-family:arial,sans-serif;color:#28253D;}#export-svg .label text,#export-svg span{fill:#28253D;color:#28253D;}#export-svg .node rect,#export-svg .node circle,#export-svg .node ellipse,#export-svg .node polygon,#export-svg .node path{fill:#ffffff;stroke:#28253D;stroke-width:2px;}#export-svg .node .label text{text-anchor:middle;}#export-svg .node .label{text-align:center;}#export-svg .arrowheadPath{fill:#000000;}#export-svg .edgePath .path{stroke:#000000;stroke-width:2px;}#export-svg .flowchart-link{stroke:#000000;fill:none;}#export-svg .edgeLabel{background-color:hsl(0,0%,80%);text-align:center;}#export-svg .edgeLabel p{background-color:hsl(0,0%,80%);}#export-svg .edgeLabel rect{opacity:0.5;background-color:hsl(0,0%,80%);fill:hsl(0,0%,80%);}#export-svg .labelBkg{background-color:rgba(204,204,204,0.5);}#export-svg [data-look="neo"].node rect,#export-svg [data-look="neo"].node polygon{stroke:#28253D;filter:url(#drop-shadow);}#export-svg :root{--mermaid-font-family:arial,sans-serif;}</style><g><marker id="export-svg_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="7.75" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="export-svg_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"/><g class="edgePaths"><path d="M260.32421875,53L260.32421875,78L260.32421875,99" id="L_A_B_0" class="edge-thickness-normal edge-pattern-solid flowchart-link" marker-end="url(#export-svg_flowchart-v2-pointEnd-margin)"/><path d="M231.5028507148251,197.7411319648251L184.61939991010289,251.35666481327996Q175.2578125,262.0625 175.2578125,276.2841112266582L175.2578125,293.5625" id="L_B_C_0" class="edge-thickness-normal edge-pattern-solid flowchart-link" marker-end="url(#export-svg_flowchart-v2-pointEnd-margin)"/><path d="M289.1455867851749,197.7411319648251L336.0290375898971,251.35666481327996Q345.390625,262.0625 345.390625,276.2841112266582L345.390625,293.5625" id="L_B_D_0" class="edge-thickness-normal edge-pattern-solid flowchart-link" marker-end="url(#export-svg_flowchart-v2-pointEnd-margin)"/><path d="M175.2578125,342.5625L175.2578125,367.5625L175.2578125,388.5625" id="L_C_E_0" class="edge-thickness-normal edge-pattern-solid flowchart-link" marker-end="url(#export-svg_flowchart-v2-pointEnd-margin)"/><path d="M138.57711476293105,437.5625L89.4291517588767,467.7099409106915Q80.703125,473.0625 80.703125,483.29936630767304L80.703125,504.5625" id="L_E_F_0" class="edge-thickness-normal edge-pattern-solid flowchart-link" marker-end="url(#export-svg_flowchart-v2-pointEnd-margin)"/><path d="M211.93851023706895,437.5625L261.0864732411233,467.7099409106915Q269.8125,473.0625 269.8125,483.29936630767304L269.8125,504.5625" id="L_E_G_0" class="edge-thickness-normal edge-pattern-solid flowchart-link" marker-end="url(#export-svg_flowchart-v2-pointEnd-margin)"/></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0,0)"><foreignObject width="0" height="0"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml" class="labelBkg"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(175.2578125,262.0625)"><g class="label" data-id="L_B_C_0" transform="translate(-12.25,-10.5)"><foreignObject width="24.5" height="21"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml" class="labelBkg"><span class="edgeLabel"><p>sim</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(345.390625,262.0625)"><g class="label" data-id="L_B_D_0" transform="translate(-12.6015625,-10.5)"><foreignObject width="25.203125" height="21"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml" class="labelBkg"><span class="edgeLabel"><p>não</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_E_0" transform="translate(0,0)"><foreignObject width="0" height="0"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml" class="labelBkg"><span class="edgeLabel"></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(80.703125,473.0625)"><g class="label" data-id="L_E_F_0" transform="translate(-27.65625,-10.5)"><foreignObject width="55.3125" height="21"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml" class="labelBkg"><span class="edgeLabel"><p>sucesso</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(269.8125,473.0625)"><g class="label" data-id="L_E_G_0" transform="translate(-17.7109375,-10.5)"><foreignObject width="35.421875" height="21"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml" class="labelBkg"><span class="edgeLabel"><p>falha</p></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default" id="flowchart-A-0" data-id="A" data-node="true" data-look="neo" transform="translate(260.32421875,30.5)"><rect class="basic label-container" data-id="A" x="-65.984375" y="-22.5" width="131.96875" height="45"/><g class="label" transform="translate(-49.984375,-10.5)"><foreignObject width="99.96875" height="21"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"><p>Recebe pedido</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-B-1" data-id="B" data-node="true" data-look="neo" transform="translate(260.32421875,164.78125)"><polygon points="61.78125,0 123.5625,-61.78125 61.78125,-123.5625 0,-61.78125" class="label-container" transform="translate(-61.28125,61.78125)"/><g class="label" transform="translate(-31.78125,-10.5)"><foreignObject width="63.5625" height="21"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"><p>Estoque?</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-C-3" data-id="C" data-node="true" data-look="neo" transform="translate(175.2578125,320.0625)"><rect class="basic label-container" data-id="C" x="-61.921875" y="-22.5" width="123.84375" height="45"/><g class="label" transform="translate(-45.921875,-10.5)"><foreignObject width="91.84375" height="21"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"><p>Reserva item</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-D-5" data-id="D" data-node="true" data-look="neo" transform="translate(345.390625,320.0625)"><rect class="basic label-container" data-id="D" x="-58.2109375" y="-22.5" width="116.421875" height="45"/><g class="label" transform="translate(-42.2109375,-10.5)"><foreignObject width="84.421875" height="21"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"><p>Retorna 422</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-E-7" data-id="E" data-node="true" data-look="neo" transform="translate(175.2578125,415.0625)"><rect class="basic label-container" data-id="E" x="-93.3515625" y="-22.5" width="186.703125" height="45"/><g class="label" transform="translate(-77.3515625,-10.5)"><foreignObject width="154.703125" height="21"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"><p>Chama API pagamento</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-F-9" data-id="F" data-node="true" data-look="neo" transform="translate(80.703125,531.0625)"><rect class="basic label-container" data-id="F" x="-72.703125" y="-22.5" width="145.40625" height="45"/><g class="label" transform="translate(-56.703125,-10.5)"><foreignObject width="113.40625" height="21"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"><p>Confirma pedido</p></span></div></foreignObject></g></g><g class="node default" id="flowchart-G-11" data-id="G" data-node="true" data-look="neo" transform="translate(269.8125,531.0625)"><rect class="basic label-container" data-id="G" x="-66.40625" y="-22.5" width="132.8125" height="45"/><g class="label" transform="translate(-50.40625,-10.5)"><foreignObject width="100.8125" height="21"><div style="display:table-cell;white-space:normal;line-height:1.5;max-width:200px;text-align:center;" xmlns="http://www.w3.org/1999/xhtml"><span class="nodeLabel"><p>Libera reserva</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- FONTES DE DADOS -->
+        <div style="display:flex; flex-direction:column; gap:0.4rem;">
+          <div class="card card-blue" style="padding:0.4em 0.7em;">
+            <h3 style="font-size:0.82em; margin-bottom:0.2em;">🔗 Fontes de dados da API</h3>
+            <div class="prompt-box" style="font-size:0.56em; padding:0.3em 0.55em; line-height:1.4;">
+              <span class="label" style="font-size:0.8em;">pergunta</span>
+              Liste cada parâmetro enviado nessa
+              chamada de API e indique a origem:
+              usuário, banco, config ou outra API.
+              Aponte os que chegam sem validação.
+            </div>
+          </div>
+          <div class="card" style="padding:0.4em 0.7em; border-left:3px solid var(--blue);">
+            <span style="font-size:0.56em; color:var(--muted); display:block; margin-bottom:0.25em; text-transform:uppercase; letter-spacing:0.06em;">resposta</span>
+            <table style="font-size:0.54em; width:100%; border-collapse:collapse;">
+              <thead>
+                <tr>
+                  <th style="text-align:left; color:var(--blue); padding:0.1em 0.4em 0.1em 0; border-bottom:1px solid var(--border);">Parâmetro</th>
+                  <th style="text-align:left; color:var(--blue); padding:0.1em 0.4em; border-bottom:1px solid var(--border);">Origem</th>
+                  <th style="text-align:left; color:var(--blue); padding:0.1em 0; border-bottom:1px solid var(--border);">Validado?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="padding:0.15em 0.4em 0.15em 0; color:var(--text);">orderId</td><td style="padding:0.15em 0.4em; color:var(--muted);">Path param</td><td style="color:var(--green);">✓ sim</td></tr>
+                <tr><td style="padding:0.15em 0.4em 0.15em 0; color:var(--text);">customerId</td><td style="padding:0.15em 0.4em; color:var(--muted);">JWT token</td><td style="color:var(--green);">✓ sim</td></tr>
+                <tr><td style="padding:0.15em 0.4em 0.15em 0; color:var(--text);">discountCode</td><td style="padding:0.15em 0.4em; color:var(--muted);">Request body</td><td style="color:var(--red);">✗ não</td></tr>
+                <tr><td style="padding:0.15em 0.4em 0.15em 0; color:var(--text);">storeId</td><td style="padding:0.15em 0.4em; color:var(--muted);">application.yml</td><td style="color:var(--green);">✓ sim</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ERROS HTTP -->
+        <div style="display:flex; flex-direction:column; gap:0.4rem;">
+          <div class="card card-red" style="padding:0.4em 0.7em;">
+            <h3 style="font-size:0.82em; margin-bottom:0.2em;">⚠️ Tratamento de erros HTTP</h3>
+            <div class="prompt-box" style="font-size:0.56em; padding:0.3em 0.55em; line-height:1.4;">
+              <span class="label" style="font-size:0.8em;">pergunta</span>
+              O que acontece se a API retornar
+              <span style="color:var(--red);">429</span>, <span style="color:var(--red);">500</span> ou timeout?
+              O erro é tratado, propagado
+              ou silenciado?
+            </div>
+          </div>
+          <div class="card" style="padding:0.4em 0.7em; border-left:3px solid var(--red);">
+            <span style="font-size:0.56em; color:var(--muted); display:block; margin-bottom:0.25em; text-transform:uppercase; letter-spacing:0.06em;">resposta</span>
+            <div style="font-size:0.57em; line-height:1.55; font-family:'Cascadia Code',monospace;">
+              <div><span style="color:var(--red);">429</span> <span style="color:var(--muted);">→</span> <span style="color:var(--text);">não tratado</span> <span style="color:var(--red);">— exception propaga sem retry ⚠️</span></div>
+              <div><span style="color:var(--yellow);">500</span> <span style="color:var(--muted);">→</span> <span style="color:var(--text);">catch genérico, loga e</span> <span style="color:var(--red);">retorna null ⚠️</span></div>
+              <div><span style="color:var(--yellow);">timeout</span> <span style="color:var(--muted);">→</span> <span style="color:var(--red);">sem timeout configurado</span></div>
+              <div style="margin-top:0.3em; color:var(--muted);">Único caso tratado: 404 → lança</div>
+              <div style="color:var(--green);">ResourceNotFoundException corretamente.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <aside class="notes">
+        O diagrama Mermaid é o que mais surpreende quem vê pela primeira vez — você cola o código e em 10 segundos tem um fluxograma visual. O rastreio de fonte de dados é excelente pra segurança — o discountCode sem validação aí é um problema real de injeção. E o tratamento de erros HTTP é algo que todo mundo esquece: 429 sem retry em integração com API de pagamento é crítico.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 10 — PRÓXIMOS PASSOS
     ════════════════════════════════════════════════════ -->
     <section>
       <h2>O que eu quero tentar a seguir</h2>
