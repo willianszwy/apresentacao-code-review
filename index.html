@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Fluxo de Code Review com IA</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/theme/moon.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+  <style>
+    :root {
+      --bg: #0d1117;
+      --amber: #d97706;
+      --blue: #38bdf8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #facc15;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --surface: #161b22;
+      --border: #30363d;
+    }
+
+    .reveal-viewport { background: var(--bg); }
+    .reveal .slides { text-align: left; }
+    .reveal { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); font-size: 26px; }
+
+    /* Gradient accent line */
+    .reveal .slides section::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(90deg, var(--amber), var(--blue));
+      border-radius: 2px;
+      margin-bottom: 0.5rem;
+    }
+    .reveal .slides section.title-slide::before { display: none; }
+
+    /* Typography */
+    .reveal h1, .reveal h2, .reveal h3 {
+      color: var(--text);
+      text-transform: none;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+    }
+    .reveal h1 { font-size: 2em; line-height: 1.1; }
+    .reveal h2 { font-size: 1.3em; color: var(--amber); margin-bottom: 0.35em; }
+    .reveal h3 { font-size: 0.95em; color: var(--blue); margin-bottom: 0.25em; }
+    .reveal p { font-size: 0.78em; line-height: 1.45; color: var(--text); margin: 0.2em 0; }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li { padding: 0.18em 0 0.18em 1.3em; position: relative; font-size: 0.76em; line-height: 1.35; }
+    .reveal ul li::before { content: '▸'; color: var(--amber); position: absolute; left: 0; }
+
+    /* Title slide */
+    .title-slide { text-align: center !important; }
+    .title-slide h1 { font-size: 2.1em; margin-bottom: 0.25em; }
+    .title-slide .subtitle { font-size: 0.9em; color: var(--blue); margin-bottom: 1em; }
+    .title-slide .tagline {
+      font-size: 0.82em; color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 0.6em; margin-top: 0.6em;
+    }
+    .title-slide .presenter { font-size: 0.7em; color: var(--muted); margin-top: 0.7em; }
+    .amber { color: var(--amber); }
+    .blue  { color: var(--blue); }
+    .green { color: var(--green); }
+    .red   { color: var(--red); }
+
+    /* Two-column layout */
+    .cols   { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; align-items: start; }
+    .cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.6rem; }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.45em 0.7em;
+    }
+    .card-amber { border-left: 3px solid var(--amber); }
+    .card-blue  { border-left: 3px solid var(--blue); }
+    .card-green { border-left: 3px solid var(--green); }
+    .card-red   { border-left: 3px solid var(--red); }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      font-size: 0.6em;
+      font-weight: 700;
+      padding: 0.2em 0.6em;
+      border-radius: 4px;
+      vertical-align: middle;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-critical { background: #7f1d1d; color: #fca5a5; }
+    .badge-medium   { background: #78350f; color: #fcd34d; }
+    .badge-low      { background: #14532d; color: #86efac; }
+    .badge-info     { background: #1e3a5f; color: #7dd3fc; }
+
+    /* Highlight box */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(217,119,6,0.15), rgba(56,189,248,0.1));
+      border: 1px solid var(--amber);
+      border-radius: 6px;
+      padding: 0.4em 0.8em;
+      margin-top: 0.4em;
+      font-size: 0.76em;
+    }
+    .highlight-box .number {
+      font-size: 1.6em;
+      font-weight: 800;
+      color: var(--amber);
+      display: block;
+      line-height: 1;
+    }
+
+    /* Code blocks */
+    .reveal pre {
+      width: 100%;
+      box-shadow: none;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      margin: 0.3em 0;
+      font-size: 0.52em;
+    }
+    .reveal pre code { padding: 0.5em 0.8em; border-radius: 6px; max-height: 220px; overflow-y: auto; }
+    .reveal code { font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; }
+    .reveal p code, .reveal li code {
+      background: #1e2a3a; color: var(--blue);
+      padding: 0.1em 0.4em; border-radius: 4px; font-size: 0.88em;
+    }
+
+    /* Flow diagram */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: nowrap;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.3em 0.5em;
+      text-align: center;
+      flex: 1;
+      font-size: 0.65em;
+      line-height: 1.2;
+    }
+    .flow-step .step-label {
+      display: block;
+      font-size: 0.8em;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.2em;
+    }
+    .flow-step .step-cmd {
+      font-family: 'Cascadia Code', monospace;
+      font-size: 0.95em;
+    }
+    .flow-step.s-amber { border-color: var(--amber); }
+    .flow-step.s-amber .step-cmd { color: var(--amber); }
+    .flow-step.s-blue  { border-color: var(--blue); }
+    .flow-step.s-blue  .step-cmd { color: var(--blue); }
+    .flow-step.s-green { border-color: var(--green); }
+    .flow-step.s-green .step-cmd { color: var(--green); }
+    .flow-step.s-red   { border-color: var(--red); }
+    .flow-step.s-red   .step-cmd { color: var(--red); }
+    .flow-arrow { color: var(--muted); font-size: 1.4em; flex-shrink: 0; }
+
+    /* Terminal fake */
+    .terminal {
+      background: #0a0f1a;
+      border: 1px solid #2563eb;
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    }
+    .terminal-bar {
+      background: #1c2333;
+      padding: 0.4em 0.8em;
+      display: flex;
+      align-items: center;
+      gap: 0.4em;
+      border-bottom: 1px solid var(--border);
+    }
+    .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .terminal-dot.r { background: #ef4444; }
+    .terminal-dot.y { background: #facc15; }
+    .terminal-dot.g { background: #22c55e; }
+    .terminal-title { font-size: 0.65em; color: var(--muted); margin-left: auto; margin-right: auto; font-family: 'Segoe UI', sans-serif; }
+    .terminal-body { padding: 0.5em 0.8em; font-size: 0.58em; line-height: 1.5; color: #cbd5e1; }
+    .terminal-body .t-prompt { color: var(--green); }
+    .terminal-body .t-cmd    { color: var(--text); }
+    .terminal-body .t-info   { color: var(--blue); }
+    .terminal-body .t-warn   { color: var(--yellow); }
+    .terminal-body .t-err    { color: var(--red); }
+    .terminal-body .t-muted  { color: var(--muted); }
+    .terminal-body .t-cursor { display: inline-block; width: 8px; height: 1em; background: var(--text); vertical-align: text-bottom; animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Output review block */
+    .review-block {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.45em 0.7em;
+      font-size: 0.57em;
+      font-family: 'Cascadia Code', monospace;
+      line-height: 1.5;
+    }
+    .rv-header { color: var(--blue); font-weight: 700; margin-bottom: 0.2em; }
+    .rv-meta   { color: var(--muted); font-size: 0.9em; margin-bottom: 0.35em; border-bottom: 1px solid var(--border); padding-bottom: 0.25em; }
+    .rv-crit   { color: #fca5a5; }
+    .rv-med    { color: #fcd34d; }
+    .rv-low    { color: #86efac; }
+    .rv-file   { color: var(--muted); font-style: italic; }
+    .rv-label  { font-family: 'Segoe UI', sans-serif; font-weight: 700; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; }
+    .rv-code   { color: #c9d1d9; margin-left: 1em; }
+
+    /* CTA steps */
+    .cta-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.35em 0.7em;
+      background: var(--surface);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .cta-step .num {
+      font-size: 1.3em;
+      font-weight: 800;
+      color: var(--amber);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 1.2em;
+      text-align: center;
+    }
+    .cta-step .content { flex: 1; }
+    .cta-step .content strong { color: var(--text); font-size: 0.75em; display: block; }
+    .cta-step .content span  { color: var(--muted); font-size: 0.65em; }
+    .cta-step .deadline {
+      font-size: 0.58em; font-weight: 700;
+      padding: 0.15em 0.5em; border-radius: 4px;
+      background: rgba(217,119,6,0.2); color: var(--amber);
+      flex-shrink: 0; align-self: center;
+    }
+
+    /* Prompt box */
+    .prompt-box {
+      background: #0a0f1a;
+      border: 1px solid #2563eb;
+      border-radius: 6px;
+      padding: 0.4em 0.7em;
+      font-size: 0.62em;
+      font-family: 'Cascadia Code', monospace;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+    .prompt-box .label {
+      font-size: 0.72em; font-weight: 700;
+      color: var(--blue); text-transform: uppercase;
+      letter-spacing: 0.08em; margin-bottom: 0.2em;
+      display: block; font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* Slide number */
+    .reveal .slide-number { color: var(--muted); font-size: 0.7em; }
+
+    /* Fragment styling */
+    .reveal .fragment { opacity: 0.3; transition: opacity 0.3s; }
+    .reveal .fragment.visible { opacity: 1; }
+
+    /* Checklist */
+    .checklist { list-style: none; padding: 0; margin: 0; }
+    .checklist li { padding: 0.3em 0 0.3em 1.6em; position: relative; font-size: 0.8em; }
+    .checklist li::before { content: '□'; color: var(--border); position: absolute; left: 0; font-size: 1.1em; }
+    .checklist li.done::before { content: '✓'; color: var(--green); }
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 1 — CAPA
+    ════════════════════════════════════════════════════ -->
+    <section class="title-slide" data-background-gradient="radial-gradient(ellipse at center, #161b22 0%, #0d1117 70%)">
+      <div style="margin-bottom: 0.8rem;">
+        <span style="font-size:3em;">⚙️</span>
+      </div>
+      <h1>Meu Fluxo de <span class="amber">Code Review</span><br>com <span class="blue">IA</span></h1>
+      <p class="subtitle">Como uso o Claude pra me ajudar a revisar código da nossa stack</p>
+      <div class="tagline">
+        Qualquer stack &nbsp;·&nbsp; Contratos &nbsp;·&nbsp; Edge Cases &nbsp;·&nbsp; Regras de Negócio &nbsp;·&nbsp; Claude Code CLI
+      </div>
+      <p class="presenter">Pressione <code>→</code> para navegar &nbsp;·&nbsp; <code>S</code> para Speaker View &nbsp;·&nbsp; <code>F</code> para tela cheia</p>
+      <aside class="notes">
+        Quero compartilhar um fluxo que montei pro meu próprio uso. Não é uma proposta formal — é só o que eu descobri que funciona bem pra mim. Se fizer sentido pra alguém do time, ótimo. Qualquer dúvida me falem depois.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 2 — O PROBLEMA DO REVIEW MANUAL
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>O que me fez querer isso</h2>
+      <div class="cols">
+        <div>
+          <h3>O que eu percebi perdendo no review</h3>
+          <ul>
+            <li>Focava no <em>como</em> o código foi escrito — perdia o <em>o que</em> ele deveria fazer</li>
+            <li>Edge cases sutis passavam: e se o dado vier nulo? e se a chamada falhar?</li>
+            <li>Regras de negócio alteradas sem intenção — regressões silenciosas</li>
+            <li>Contratos quebrados com outros serviços ou libs que o código depende</li>
+            <li>Review sem contexto: sem saber o porquê da mudança, fica difícil avaliar o risco</li>
+          </ul>
+          <div style="margin-top:0.6em;" class="card card-amber">
+            <p style="font-size:0.78em; margin:0; color:var(--text)">É difícil revisar bem sem saber <strong>o que a mudança pretende fazer</strong> — e sem uma segunda leitura técnica.</p>
+          </div>
+        </div>
+        <div>
+          <h3>O que eu queria automatizar</h3>
+          <div class="card card-blue" style="margin-bottom:0.5em">
+            <p style="font-size:0.75em; margin:0 0 0.3em 0; color:var(--muted)">Uma leitura que cobrisse sempre:</p>
+            <ul>
+              <li style="font-size:0.75em">Quebras de contrato com serviços e dependências</li>
+              <li style="font-size:0.75em">Edge cases não tratados na lógica alterada</li>
+              <li style="font-size:0.75em">Regras de negócio impactadas indiretamente</li>
+              <li style="font-size:0.75em">Dados sensíveis expostos sem querer</li>
+            </ul>
+          </div>
+          <div class="card card-green">
+            <p style="font-size:0.75em; margin:0; color:var(--text)">E que funcionasse independente da linguagem — nossa stack é variada.</p>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">
+        O ponto chave não é a linguagem — é a qualidade da revisão. Qualquer dev fica focado no estilo e perde o que realmente importa: o comportamento. O agente inverte isso.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 3 — VISÃO GERAL DO FLUXO
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>Como o fluxo funciona</h2>
+      <p style="font-size:0.78em; color:var(--muted); margin-bottom:1.2em">Um comando no terminal — cinco etapas automáticas — e eu tenho o review na tela:</p>
+
+      <div class="flow" style="margin-bottom: 1.4em;">
+        <div class="flow-step s-amber">
+          <span class="step-label">entrada</span>
+          <span class="step-cmd">branch<br>name</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step s-blue">
+          <span class="step-label">passo 1</span>
+          <span class="step-cmd">git fetch<br>origin</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step s-blue">
+          <span class="step-label">passo 2</span>
+          <span class="step-cmd">git diff<br>main...branch</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step s-amber" style="border-width:2px;">
+          <span class="step-label">passo 3</span>
+          <span class="step-cmd">agente<br>Claude</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step s-green">
+          <span class="step-label">saída</span>
+          <span class="step-cmd">review<br>formatado</span>
+        </div>
+      </div>
+
+      <div class="cols">
+        <div class="card card-amber">
+          <h3 style="font-size:0.85em; margin-bottom:0.4em;">O que acontece automaticamente</h3>
+          <ul>
+            <li style="font-size:0.75em">Fetch garante que a branch remota está atualizada</li>
+            <li style="font-size:0.75em">Diff compara branch com <code>origin/develop</code> — só o que mudou</li>
+            <li style="font-size:0.75em">Agente recebe o diff + system prompt especializado</li>
+            <li style="font-size:0.75em">Output segue formato fixo: severidade, arquivo:linha, sugestão</li>
+          </ul>
+        </div>
+        <div class="card card-blue">
+          <h3 style="font-size:0.85em; margin-bottom:0.4em;">O que eu faço</h3>
+          <div class="terminal" style="margin-top:0.3em">
+            <div class="terminal-bar">
+              <div class="terminal-dot r"></div>
+              <div class="terminal-dot y"></div>
+              <div class="terminal-dot g"></div>
+              <span class="terminal-title">bash</span>
+            </div>
+            <div class="terminal-body" style="padding:0.5em 0.8em;">
+              <span class="t-prompt">$</span>
+              <span class="t-cmd"> claude /review feature/minha-branch</span>
+            </div>
+          </div>
+          <p style="font-size:0.7em; color:var(--muted); margin-top:0.4em">Só isso. O resto é automático.</p>
+        </div>
+      </div>
+      <aside class="notes">
+        O que eu gosto nesse fluxo é que não precisa pensar — é um comando e o resultado aparece. Não preciso lembrar de checar lazy loading, N+1, scope errado... o agente faz isso por mim. Eu leio o output e decido o que vale corrigir agora.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 4 — O AGENTE ESPECIALIZADO
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>O Agente que eu Configurei</h2>
+      <p style="font-size:0.78em; color:var(--muted); margin-bottom:0.8em">O system prompt define o foco — agnóstico de linguagem, centrado no comportamento:</p>
+      <div class="cols">
+        <div>
+          <div class="prompt-box">
+            <span class="label">System Prompt — Revisor de Comportamento e Contratos</span>
+Você é um engenheiro sênior com foco em
+<span style="color:var(--amber)">corretude de comportamento</span> e
+<span style="color:var(--amber)">quebras de contrato</span>.
+
+Use a descrição do PR como contexto principal
+para entender a intenção da mudança antes
+de analisar o diff.
+
+<span style="color:var(--blue)">FOCO em cada review:</span>
+• Quebras de contrato com serviços, libs ou
+  interfaces que o código depende
+• Edge cases não tratados na lógica alterada
+  (nulos, falhas, estados inesperados)
+• Regras de negócio impactadas indiretamente
+• Dados sensíveis expostos ou mal tratados
+• Comportamento alterado silenciosamente
+  em relação ao que a descrição descreve
+          </div>
+        </div>
+        <div>
+          <h3>Por que a descrição do PR importa</h3>
+          <div class="card card-amber" style="margin-bottom:0.5em">
+            <p style="font-size:0.75em; margin:0; color:var(--text)">O agente — assim como um reviewer humano — não sabe o <em>porquê</em> da mudança só olhando o diff. Uma boa descrição de PR muda o nível do review:</p>
+          </div>
+          <ul>
+            <li style="font-size:0.75em">Sem descrição → review foca em estilo e sintaxe</li>
+            <li style="font-size:0.75em">Com contexto → review foca no risco e na intenção</li>
+            <li style="font-size:0.75em">"Corrige cálculo de frete" → agente sabe o que checar</li>
+            <li style="font-size:0.75em">"Adiciona suporte a multi-tenant" → analisa isolamento</li>
+          </ul>
+          <div class="card card-green" style="margin-top:0.5em; font-size:0.72em">
+            <strong>Funciona com qualquer stack</strong> — o foco é no comportamento, não na sintaxe.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">
+        Isso é uma coisa que aprendi usando o fluxo: quanto melhor a descrição do PR, melhor o review que o agente devolve. Igual a um reviewer humano — se você não explica o que fez e por quê, a revisão fica superficial.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 5 — O SLASH COMMAND /review
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>O Slash Command <code style="font-size:0.85em">/review</code></h2>
+      <p style="font-size:0.78em; color:var(--muted); margin-bottom:0.6em">Tudo fica num arquivo <code>.claude/commands/review.md</code> — o Claude Code carrega automaticamente</p>
+
+      <div class="cols" style="gap:1rem; align-items:start;">
+        <div style="grid-column: span 2;">
+          <pre><code class="language-markdown">Você é um engenheiro sênior com foco em corretude de comportamento e
+quebras de contrato. Revise o diff como um tech lead que prioriza risco
+acima de estilo.
+
+Use a descrição do PR como contexto principal — ela define a intenção
+da mudança e direciona onde concentrar a análise.
+
+Sua tarefa:
+1. Execute: git fetch origin
+2. Execute: git diff origin/develop...origin/$ARGUMENTS
+3. Leia a descrição do PR se disponível, depois analise o diff
+
+Foque em:
+- Quebras de contrato com serviços, libs ou interfaces dependentes
+- Edge cases não tratados: nulos, falhas, estados inesperados, concorrência
+- Regras de negócio impactadas indiretamente pela mudança
+- Comportamento alterado silenciosamente em relação ao que foi descrito
+- Dados sensíveis expostos ou mal tratados
+
+Formato de saída para cada item encontrado:
+### [EMOJI] [SEVERIDADE] [Categoria]
+**Arquivo:** NomeDoArquivo:linha
+**Problema:** descrição objetiva do risco
+**Sugestão:** orientação ou trecho de código
+
+Severidades: 🔴 CRÍTICO | 🟡 MÉDIO | 🟢 BAIXO
+Categorias: Contrato | Edge Case | Regra de Negócio | Dados/Segurança | Comportamento</code></pre>
+        </div>
+      </div>
+
+      <div class="cols" style="margin-top:0.7em; gap:1rem;">
+        <div class="card card-amber">
+          <p style="font-size:0.72em; margin:0;"><strong class="amber">$ARGUMENTS</strong> — variável que recebe o nome da branch após o comando. Ex: <code>/review feature/pagamentos</code> → <code>$ARGUMENTS = "feature/pagamentos"</code></p>
+        </div>
+        <div class="card card-blue">
+          <p style="font-size:0.72em; margin:0;"><strong class="blue">Localização:</strong> o arquivo fica na raiz do repositório em <code>.claude/commands/review.md</code> e fica versionado com o projeto.</p>
+        </div>
+      </div>
+      <aside class="notes">
+        O que eu gosto é que é só um arquivo Markdown. Eu versiono junto com o projeto. Se alguém do time quiser usar, já está lá — não precisa configurar nada. O $ARGUMENTS é o que recebe o nome da branch que eu passo no comando.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 6 — EXEMPLO DE OUTPUT
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>O que eu recebo de volta</h2>
+      <p style="font-size:0.75em; color:var(--muted); margin-bottom:0.7em">Exemplo de output após <code>claude /review feature/calculo-frete</code> — PR com descrição clara da intenção:</p>
+
+      <div class="review-block">
+        <div class="rv-header">## Review: feature/calculo-frete</div>
+        <div class="rv-meta">Arquivos alterados: 4 &nbsp;|&nbsp; Linhas: +89 / -34 &nbsp;|&nbsp; Itens encontrados: 3</div>
+
+        <div style="margin-bottom:0.6em">
+          <span class="rv-crit rv-label">🔴 CRÍTICO [Regra de Negócio]</span><br>
+          <span class="rv-file">**Arquivo:** FreightCalculator.java:67</span><br>
+          <span style="color:var(--text)">**Problema:** A nova lógica de desconto é aplicada a pedidos já confirmados — a descrição do PR indica que deveria valer apenas para novos pedidos.</span><br>
+          <span style="color:var(--muted)">**Sugestão:**</span><br>
+          <span class="rv-code" style="color:var(--red)">return baseFreight * discountRate;</span><br>
+          <span class="rv-code" style="color:var(--green)">return order.isPending() ? baseFreight * discountRate : baseFreight;</span>
+        </div>
+
+        <div style="margin-bottom:0.6em">
+          <span class="rv-med rv-label">🟡 MÉDIO [Edge Case]</span><br>
+          <span class="rv-file">**Arquivo:** FreightCalculator.java:91</span><br>
+          <span style="color:var(--text)">**Problema:** Divisão pelo peso do pedido sem verificar se é zero — pedidos sem itens físicos lançam <code style="font-size:0.9em">ArithmeticException</code> em runtime.</span><br>
+          <span style="color:var(--muted)">**Sugestão:**</span>
+          <span class="rv-code"> Adicionar guard <code style="font-size:0.9em">if (weight == 0) return 0;</code> antes do cálculo.</span>
+        </div>
+
+        <div>
+          <span class="rv-low rv-label">🟢 BAIXO [Contrato]</span><br>
+          <span class="rv-file">**Arquivo:** FreightService.java:23</span><br>
+          <span style="color:var(--text)">**Problema:** Retorno alterado de <code style="font-size:0.9em">BigDecimal</code> para <code style="font-size:0.9em">double</code> — clientes que dependem da interface podem quebrar silenciosamente.</span><br>
+          <span style="color:var(--muted)">**Sugestão:**</span>
+          <span class="rv-code"> Manter <code style="font-size:0.9em">BigDecimal</code> para preservar precisão e compatibilidade com os consumidores atuais.</span>
+        </div>
+      </div>
+      <aside class="notes">
+        O que eu mais gosto nesse formato: arquivo e linha específicos, e sempre vem uma sugestão de código. Não é um relatório vago — eu sei exatamente onde ir e o que mudar. Pego o crítico, corrijo antes de abrir o PR. Os outros eu avalio se vale agora ou vai pro backlog.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 7 — DEMO FLOW COMPLETO
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>Na prática — como eu uso</h2>
+      <p style="font-size:0.75em; color:var(--muted); margin-bottom:0.7em">Antes de abrir qualquer PR, rodo isso no terminal:</p>
+
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="terminal-dot r"></div>
+          <div class="terminal-dot y"></div>
+          <div class="terminal-dot g"></div>
+          <span class="terminal-title">bash — ~/projects/meu-projeto</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-prompt">~/projects/meu-servico $</span> <span class="t-cmd">claude /review feature/calculo-frete</span></div>
+          <div style="margin-top:0.3em"><span class="t-info">⚙  Executando slash command: review</span></div>
+          <div><span class="t-info">⟳  git fetch origin</span> <span class="t-muted">— atualizando refs remotas...</span></div>
+          <div><span class="t-info">⟳  git diff origin/develop...origin/feature/calculo-frete</span></div>
+          <div><span class="t-muted">   4 arquivos · +89 linhas · -34 linhas</span></div>
+          <div style="margin-top:0.3em"><span class="t-info">◆  Analisando diff com base na descrição do PR...</span></div>
+          <div style="margin-top:0.3em"><span style="color:#fca5a5;">🔴 CRÍTICO [Regra de Negócio]  FreightCalculator.java:67</span></div>
+          <div><span class="t-muted">   Desconto aplicado a pedidos já confirmados — contradiz a descrição do PR</span></div>
+          <div style="margin-top:0.2em"><span style="color:#fcd34d;">🟡 MÉDIO   [Edge Case]         FreightCalculator.java:91</span></div>
+          <div><span class="t-muted">   Divisão por zero possível — pedidos sem itens físicos</span></div>
+          <div style="margin-top:0.2em"><span style="color:#86efac;">🟢 BAIXO   [Contrato]          FreightService.java:23</span></div>
+          <div><span class="t-muted">   Tipo de retorno alterado — pode quebrar consumidores existentes</span></div>
+          <div style="margin-top:0.3em"><span class="t-info">✓  Review concluído — 3 itens (1 crítico, 1 médio, 1 baixo)</span></div>
+          <div><span class="t-prompt">~/projects/meu-servico $</span> <span class="t-cursor"></span></div>
+        </div>
+      </div>
+
+      <div class="cols" style="margin-top:0.6em; gap:1rem;">
+        <div class="card card-green">
+          <p style="font-size:0.72em; margin:0;"><strong>Tempo total:</strong> ~15 segundos do comando ao output completo, incluindo fetch e análise do diff.</p>
+        </div>
+        <div class="card card-amber">
+          <p style="font-size:0.72em; margin:0;"><strong>O que eu faço com isso:</strong> corrijo o crítico na hora. Os demais eu avalio — alguns vão pro PR, outros pro backlog.</p>
+        </div>
+      </div>
+      <aside class="notes">
+        Esse é o fluxo que rodo antes de abrir qualquer PR. O crítico eu corrijo na hora. Os médios e baixos eu decido se vale a pena agora ou coloco num tech debt. O reviewer humano quando abre o PR já não precisa checar as coisas óbvias.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 8 — COMO REPLICAR
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>Como eu montei — se quiserem tentar</h2>
+      <p style="font-size:0.78em; color:var(--muted); margin-bottom:0.8em">Leva menos de 10 minutos. Só precisa do <strong>Claude Code CLI</strong> instalado.</p>
+
+      <div class="cols">
+        <div style="display:flex; flex-direction:column; gap:0.55em;">
+          <div class="cta-step">
+            <div class="num">1</div>
+            <div class="content">
+              <strong>Instalar o Claude Code CLI</strong>
+              <span><code>npm install -g @anthropic-ai/claude-code</code> — requer Node 18+</span>
+            </div>
+            <div class="deadline">Pré-req</div>
+          </div>
+          <div class="cta-step">
+            <div class="num">2</div>
+            <div class="content">
+              <strong>Criar o diretório de commands</strong>
+              <span><code>mkdir -p .claude/commands</code> na raiz do seu repositório</span>
+            </div>
+            <div class="deadline">30 seg</div>
+          </div>
+          <div class="cta-step">
+            <div class="num">3</div>
+            <div class="content">
+              <strong>Criar o arquivo <code>review.md</code></strong>
+              <span>Cole o conteúdo do Slide 5 em <code>.claude/commands/review.md</code></span>
+            </div>
+            <div class="deadline">2 min</div>
+          </div>
+          <div class="cta-step">
+            <div class="num">4</div>
+            <div class="content">
+              <strong>Ajustar o system prompt para sua stack</strong>
+              <span>Adapte linguagens, frameworks e padrões para o seu projeto</span>
+            </div>
+            <div class="deadline">5 min</div>
+          </div>
+          <div class="cta-step">
+            <div class="num">5</div>
+            <div class="content">
+              <strong>Testar com uma branch real</strong>
+              <span><code>claude /review feature/sua-branch</code> — ver o output</span>
+            </div>
+            <div class="deadline">Pronto</div>
+          </div>
+        </div>
+        <div>
+          <h3>Dicas de ajuste do prompt</h3>
+          <ul>
+            <li>Adicione regras específicas do seu projeto (ex: "sempre checar autenticação JWT")</li>
+            <li>Mencione patterns que o time usa (ex: "usamos Repository pattern + Service layer")</li>
+            <li>Liste o que <em>não</em> é relevante (ex: "ignore comentários em português")</li>
+            <li>Adicione checklist de compliance se necessário</li>
+          </ul>
+          <div class="highlight-box" style="margin-top:0.8em">
+            <p style="margin:0; font-size:0.78em; color:var(--text)">
+              <strong class="amber">Dica:</strong> eu commito o <code>.claude/commands/review.md</code> no repo — assim quem quiser usar já encontra lá, sem precisar pedir pra mim.
+            </p>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">
+        O passo mais importante é o 4 — ajustar o system prompt pro contexto do projeto. Eu fui refinando o meu ao longo do tempo. Se alguém quiser começar do que eu tenho e adaptar, fico feliz em compartilhar.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 9 — PRÓXIMOS PASSOS
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>O que eu quero tentar a seguir</h2>
+      <p style="font-size:0.78em; color:var(--muted); margin-bottom:0.8em">O fluxo atual já me ajuda. Essas são as evoluções que tenho vontade de explorar:</p>
+
+      <div class="cols" style="gap:1rem; align-items:start; margin-bottom:0.8em;">
+        <div class="card card-amber">
+          <h3 style="font-size:0.88em; color:var(--amber); margin-bottom:0.5em;">🪝 Hook pre-push</h3>
+          <p style="font-size:0.73em; margin:0 0 0.5em 0; color:var(--text)">Rodar o review automaticamente antes de todo <code>git push</code> — sem precisar lembrar de chamar o comando manualmente.</p>
+          <pre style="font-size:0.7em;"><code class="language-bash"># .git/hooks/pre-push
+#!/bin/bash
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+claude /review $BRANCH</code></pre>
+        </div>
+        <div class="card card-green">
+          <h3 style="font-size:0.88em; color:var(--green); margin-bottom:0.5em;">📊 Métricas de review</h3>
+          <p style="font-size:0.73em; margin:0 0 0.4em 0; color:var(--text)">Entender se o fluxo realmente faz diferença ao longo do tempo:</p>
+          <ul>
+            <li style="font-size:0.72em">Categorias mais recorrentes → onde o time erra mais</li>
+            <li style="font-size:0.72em">Críticos encontrados antes vs. depois do merge</li>
+            <li style="font-size:0.72em">Evolução do prompt a partir dos falsos negativos</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="highlight-box" style="text-align:center;">
+        <strong style="font-size:0.88em; color:var(--text)">Isso é o que funciona pra mim.<br>Se quiserem explorar também, fico feliz em ajudar.</strong>
+        <p style="margin:0.4em 0 0 0; font-size:0.8em; color:var(--muted)">O <code>review.md</code> já está no repo — é só abrir e adaptar.</p>
+        <p style="margin:0.3em 0 0 0; font-size:0.85em;"><strong class="amber">Perguntas?</strong></p>
+      </div>
+      <aside class="notes">
+        O hook pre-push é o que mais tenho vontade de tentar — tirar o atrito de lembrar de rodar. As métricas seriam bacanas pra ver se o prompt está evoluindo na direção certa. Alguma dúvida sobre o fluxo ou como adaptar pro projeto de vocês?
+      </aside>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    backgroundTransition: 'fade',
+    controls: true,
+    progress: true,
+    center: false,
+    width: 1280,
+    height: 700,
+    margin: 0.04,
+    minScale: 0.1,
+    maxScale: 2.0,
+    plugins: [RevealNotes],
+  });
+
+  // Initialize highlight.js
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('pre code').forEach(block => {
+      hljs.highlightElement(block);
+    });
+  });
+
+  Reveal.on('slidechanged', () => {
+    document.querySelectorAll('pre code').forEach(block => {
+      if (!block.classList.contains('hljs')) {
+        hljs.highlightElement(block);
+      }
+    });
+  });
+</script>
+</body>
+</html>
