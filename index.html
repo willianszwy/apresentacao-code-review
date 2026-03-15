@@ -7,7 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:ital,wght@0,400;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reset.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reveal.min.css">
@@ -16,28 +16,29 @@
 
   <style>
     :root {
-      --bg: #0d0f17;
-      --amber: #7c6ef5;
-      --blue: #4fc4cf;
-      --green: #3dd68c;
-      --red: #ff6b81;
-      --yellow: #7c6ef5;
-      --text: #e8ecf7;
-      --muted: #7d89b0;
-      --surface: #161926;
-      --border: #2a2f47;
+      --bg: #081420;
+      --primary: #1a77a3;
+      --amber: #ffe270;
+      --blue: #bae4f0;
+      --green: #8ecfa8;
+      --red: #f07878;
+      --yellow: #ffe270;
+      --text: #e7f0ea;
+      --muted: #6fa8be;
+      --surface: #0f2535;
+      --border: #1c3d58;
     }
 
     .reveal-viewport { background: var(--bg); }
     .reveal .slides { text-align: left; }
-    .reveal { font-family: 'Inter', system-ui, sans-serif; color: var(--text); font-size: 26px; }
+    .reveal { font-family: 'Google Sans', Roboto, system-ui, sans-serif; color: var(--text); font-size: 26px; }
 
     /* Gradient accent line — amarelo MP */
     .reveal .slides section::before {
       content: '';
       display: block;
       height: 2px;
-      background: linear-gradient(90deg, var(--amber) 30%, var(--blue));
+      background: linear-gradient(90deg, var(--primary) 40%, var(--amber));
       border-radius: 2px;
       margin-bottom: 0.5rem;
     }
@@ -49,9 +50,10 @@
       text-transform: none;
       letter-spacing: -0.02em;
       font-weight: 700;
+      font-family: 'Roboto Slab', Georgia, serif;
     }
     .reveal h1 { font-size: 2em; line-height: 1.1; }
-    .reveal h2 { font-size: 1.3em; color: #ffffff; margin-bottom: 0.35em; border-left: 3px solid var(--amber); padding-left: 0.5em; }
+    .reveal h2 { font-size: 1.3em; color: #ffffff; margin-bottom: 0.35em; border-left: 3px solid var(--primary); padding-left: 0.5em; }
     .reveal h3 { font-size: 0.95em; color: var(--blue); margin-bottom: 0.25em; }
     .reveal p { font-size: 0.78em; line-height: 1.45; color: var(--text); margin: 0.2em 0; }
     .reveal ul { list-style: none; padding: 0; margin: 0; }
@@ -100,14 +102,14 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-    .badge-critical { background: #2d0f1a; color: #ff9aaa; }
-    .badge-medium   { background: #1e1535; color: #b8acf8; }
-    .badge-low      { background: #0d2418; color: #5de8a0; }
-    .badge-info     { background: #0e2030; color: #6dd9e0; }
+    .badge-critical { background: #2a1010; color: #f09090; }
+    .badge-medium   { background: #0d2535; color: #bae4f0; }
+    .badge-low      { background: #0f2520; color: #8ecfa8; }
+    .badge-info     { background: #0a2035; color: #bae4f0; }
 
     /* Highlight box */
     .highlight-box {
-      background: linear-gradient(135deg, rgba(124,110,245,0.12), rgba(79,196,207,0.1));
+      background: linear-gradient(135deg, rgba(26,119,163,0.18), rgba(255,226,112,0.06));
       border: 1px solid var(--amber);
       border-radius: 6px;
       padding: 0.4em 0.8em;
@@ -134,7 +136,7 @@
     .reveal pre code { padding: 0.5em 0.8em; border-radius: 6px; max-height: 220px; overflow-y: auto; }
     .reveal code { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; }
     .reveal p code, .reveal li code {
-      background: #1a1d2e; color: #a99ef7;
+      background: #0f2535; color: #bae4f0;
       padding: 0.1em 0.4em; border-radius: 4px; font-size: 0.88em;
     }
 
@@ -179,14 +181,14 @@
 
     /* Terminal fake */
     .terminal {
-      background: #0c0e18;
+      background: #07131e;
       border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
       font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
     }
     .terminal-bar {
-      background: #131525;
+      background: #0b1f30;
       padding: 0.4em 0.8em;
       display: flex;
       align-items: center;
@@ -197,8 +199,8 @@
     .terminal-dot.r { background: #ef4444; }
     .terminal-dot.y { background: #facc15; }
     .terminal-dot.g { background: #22c55e; }
-    .terminal-title { font-size: 0.65em; color: var(--muted); margin-left: auto; margin-right: auto; font-family: 'Inter', sans-serif; }
-    .terminal-body { padding: 0.5em 0.8em; font-size: 0.58em; line-height: 1.5; color: #b8c0d8; }
+    .terminal-title { font-size: 0.65em; color: var(--muted); margin-left: auto; margin-right: auto; font-family: 'Google Sans', Roboto, sans-serif; }
+    .terminal-body { padding: 0.5em 0.8em; font-size: 0.58em; line-height: 1.5; color: #c5dde8; }
     .terminal-body .t-prompt { color: var(--green); }
     .terminal-body .t-cmd    { color: var(--text); }
     .terminal-body .t-info   { color: var(--blue); }
@@ -210,7 +212,7 @@
 
     /* Output review block */
     .review-block {
-      background: #0c0e18;
+      background: #07131e;
       border: 1px solid var(--border);
       border-radius: 6px;
       padding: 0.45em 0.7em;
@@ -224,8 +226,8 @@
     .rv-med    { color: #fcd34d; }
     .rv-low    { color: #86efac; }
     .rv-file   { color: var(--muted); font-style: italic; }
-    .rv-label  { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; }
-    .rv-code   { color: #c9d1d9; margin-left: 1em; }
+    .rv-label  { font-family: 'Google Sans', Roboto, sans-serif; font-weight: 700; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; }
+    .rv-code   { color: #d0e8f0; margin-left: 1em; }
 
     /* CTA steps */
     .cta-step {
@@ -252,13 +254,13 @@
     .cta-step .deadline {
       font-size: 0.58em; font-weight: 700;
       padding: 0.15em 0.5em; border-radius: 4px;
-      background: rgba(217,119,6,0.2); color: var(--amber);
+      background: rgba(255,226,112,0.12); color: var(--amber);
       flex-shrink: 0; align-self: center;
     }
 
     /* Prompt box */
     .prompt-box {
-      background: #131829;
+      background: #0b1f30;
       border: 1px solid var(--border);
       border-radius: 6px;
       padding: 0.4em 0.7em;
@@ -271,7 +273,7 @@
       font-size: 0.72em; font-weight: 700;
       color: var(--blue); text-transform: uppercase;
       letter-spacing: 0.08em; margin-bottom: 0.2em;
-      display: block; font-family: 'Inter', sans-serif;
+      display: block; font-family: 'Google Sans', Roboto, sans-serif;
     }
 
     /* Slide number */
@@ -295,7 +297,7 @@
     <!-- ═══════════════════════════════════════════════════
          SLIDE 1 — CAPA
     ════════════════════════════════════════════════════ -->
-    <section class="title-slide" data-background-gradient="radial-gradient(ellipse at center, #252d4a 0%, #1c2138 70%)">
+    <section class="title-slide" data-background-gradient="radial-gradient(ellipse at center, #143d5c 0%, #081420 70%)">
       <div style="margin-bottom: 0.8rem;">
         <span style="font-size:3em;">⚙️</span>
       </div>
@@ -306,7 +308,7 @@
       </div>
       <p class="presenter">Pressione <code>→</code> para navegar &nbsp;·&nbsp; <code>F</code> para tela cheia</p>
       <aside class="notes">
-        Quero compartilhar um fluxo que montei pro meu próprio uso. Não é uma proposta formal — é só o que eu descobri que funciona bem pra mim. Se fizer sentido pra alguém do time, ótimo. Qualquer dúvida me falem depois.
+        Esta apresentação mostra um fluxo de code review automatizado com Claude Code CLI. A ideia é usar agentes de IA como uma camada extra de revisão — não substituir o reviewer humano, mas chegar no PR já com os problemas óbvios resolvidos.
       </aside>
     </section>
 
@@ -346,7 +348,7 @@
         </div>
       </div>
       <aside class="notes">
-        O ponto chave não é a linguagem — é a qualidade da revisão. Qualquer dev fica focado no estilo e perde o que realmente importa: o comportamento. O agente inverte isso.
+        O problema central não é a linguagem — é o foco. Review manual tende a parar no estilo e na sintaxe. O que escapa são os edge cases, as regras de negócio impactadas indiretamente e as quebras de contrato silenciosas. O agente tem um foco fixo nessas categorias que um humano cansado frequentemente perde.
       </aside>
     </section>
 
@@ -412,7 +414,7 @@
         </div>
       </div>
       <aside class="notes">
-        O que eu gosto nesse fluxo é que não precisa pensar — é um comando e o resultado aparece. Não preciso lembrar de checar lazy loading, N+1, scope errado... o agente faz isso por mim. Eu leio o output e decido o que vale corrigir agora.
+        O fluxo é intencional: tudo que pode ser automatizado é automatizado. O fetch garante que o diff está atualizado. O agente sabe exatamente o que checar. O output chega formatado e acionável. O reviewer humano entra só na decisão final — que vale a pena corrigir agora, o que vai pro backlog.
       </aside>
     </section>
 
@@ -462,7 +464,7 @@ de analisar o diff.
         </div>
       </div>
       <aside class="notes">
-        Isso é uma coisa que aprendi usando o fluxo: quanto melhor a descrição do PR, melhor o review que o agente devolve. Igual a um reviewer humano — se você não explica o que fez e por quê, a revisão fica superficial.
+        O agente funciona como um reviewer humano: sem contexto, o review fica superficial. A descrição do PR é o que transforma uma análise genérica de diff em uma revisão focada no risco real da mudança. Quanto mais clara a intenção declarada, mais cirúrgico o feedback.
       </aside>
     </section>
 
@@ -514,7 +516,7 @@ Categorias: Contrato | Edge Case | Regra de Negócio | Dados/Segurança | Compor
         </div>
       </div>
       <aside class="notes">
-        O que eu gosto é que é só um arquivo Markdown. Eu versiono junto com o projeto. Se alguém do time quiser usar, já está lá — não precisa configurar nada. O $ARGUMENTS é o que recebe o nome da branch que eu passo no comando.
+        O slash command é só um arquivo Markdown versionado junto com o projeto. Qualquer pessoa do time que tiver o Claude Code instalado já consegue usar sem nenhuma configuração adicional. O $ARGUMENTS é o mecanismo que passa o argumento do comando para dentro do prompt.
       </aside>
     </section>
 
@@ -555,7 +557,7 @@ Categorias: Contrato | Edge Case | Regra de Negócio | Dados/Segurança | Compor
         </div>
       </div>
       <aside class="notes">
-        O que eu mais gosto nesse formato: arquivo e linha específicos, e sempre vem uma sugestão de código. Não é um relatório vago — eu sei exatamente onde ir e o que mudar. Pego o crítico, corrijo antes de abrir o PR. Os outros eu avalio se vale agora ou vai pro backlog.
+        O formato é acionável por design: arquivo e linha exatos, descrição do problema e sugestão concreta. Não é um relatório vago. O crítico vai direto para correção antes de abrir o PR. Médio e baixo entram numa decisão consciente — corrigir agora ou registrar como tech debt.
       </aside>
     </section>
 
@@ -609,7 +611,7 @@ se não existir. Confirme o caminho do arquivo instalado.</div>
       </div>
 
       <aside class="notes">
-        Esse é o fluxo que rodo antes de abrir qualquer PR. O crítico eu corrijo na hora. Os médios e baixos eu decido se vale a pena agora ou coloco num tech debt. O reviewer humano quando abre o PR já não precisa checar as coisas óbvias. O prompt de instalação no final: basta colar no Claude Code que ele cria o arquivo no lugar certo.
+        O tempo de 15 segundos do início ao output inclui o fetch remoto e a análise completa do diff. O reviewer humano que abrir o PR depois já não precisa checar as coisas óbvias — o agente já fez isso. O prompt de instalação no final do slide permite que o Claude Code configure tudo automaticamente clonando este repositório.
       </aside>
     </section>
 
@@ -679,7 +681,7 @@ se não existir. Confirme o caminho do arquivo instalado.</div>
         </div>
       </div>
       <aside class="notes">
-        O passo mais importante é o 4 — ajustar o system prompt pro contexto do projeto. Eu fui refinando o meu ao longo do tempo. Se alguém quiser começar do que eu tenho e adaptar, fico feliz em compartilhar.
+        O passo mais importante é o 4 — adaptar o system prompt para o contexto do projeto. Os arquivos deste repo são um ponto de partida, não uma configuração final. Adicionar regras específicas do domínio, patterns da stack e o que deve ser ignorado melhora muito a qualidade do output.
       </aside>
     </section>
 
@@ -769,7 +771,7 @@ se não existir. Confirme o caminho do arquivo instalado.</div>
       </div>
 
       <aside class="notes">
-        O diagrama Mermaid é o que mais surpreende quem vê pela primeira vez — você cola o código e em 10 segundos tem um fluxograma visual. O rastreio de fonte de dados é excelente pra segurança — o discountCode sem validação aí é um problema real de injeção. E o tratamento de erros HTTP é algo que todo mundo esquece: 429 sem retry em integração com API de pagamento é crítico.
+        Essas perguntas mostram que o agente vai além do review: pode ser usado para documentar, auditar segurança e mapear comportamentos de erro. O discountCode sem validação no exemplo é um problema real de injeção. O 429 sem retry em integração de pagamento é o tipo de coisa que só aparece em produção — e tarde demais.
       </aside>
     </section>
 
@@ -839,7 +841,7 @@ se não existir. Confirme o caminho do arquivo instalado.</div>
       </div>
 
       <aside class="notes">
-        Diferença chave da abordagem anterior: code-reviewer é agnóstico de linguagem — funciona em Java, TypeScript, Go, Python — e não avalia negócio. O logic-reviewer ganhou um foco novo importante: detectar "cavalo de troia" — mudanças não relacionadas embutidas no PR sem menção na descrição. Os dois rodam em paralelo: o tempo total é o do mais lento, não a soma dos dois.
+        A separação de responsabilidades é o que torna essa abordagem eficaz. O code-reviewer nunca vai flagrar uma regra de negócio violada — e o logic-reviewer nunca vai detectar um SQL injection. São lentes completamente diferentes sobre o mesmo diff. Rodando em paralelo, o tempo total é o do agente mais lento — não a soma dos dois.
       </aside>
     </section>
 
@@ -919,7 +921,7 @@ NÃO avalia: performance, idiomas, estilo de código.</code></pre>
       </div>
 
       <aside class="notes">
-        O campo description é o que o Claude Code usa para decidir quando chamar o agente automaticamente. Mas no /review-dual os chamamos explicitamente. O tools do code-reviewer é restrito — ele não precisa de Agent ou Write. O logic-reviewer usa o modelo padrão do projeto. A separação de responsabilidades é total: um não pisa no outro.
+        O frontmatter define o contrato do agente: nome, modelo, tools disponíveis e quando usá-lo. O tools do code-reviewer é deliberadamente restrito — ele só precisa ler arquivos e buscar na web. Nenhum dos dois agentes avalia o que o outro avalia. Isso não é acidente — é o que garante que cada relatório seja limpo e focado.
       </aside>
     </section>
 
@@ -1022,7 +1024,7 @@ embutido na mudança (cavalo de troia).
       </div>
 
       <aside class="notes">
-        O veredicto final é automático: qualquer crítico de qualquer agente bloqueia o merge. Não preciso decidir — o fluxo decide por mim. O "cavalo de troia" que o logic-reviewer detectou aqui — remoção de guard de autenticação num PR de frete — é exatamente o tipo de coisa que passa despercebida numa revisão manual quando o reviewer está focado só no diff de negócio.
+        O veredicto é deliberadamente binário: qualquer crítico de qualquer agente bloqueia o merge. Isso remove ambiguidade e cria um gate claro. O cavalo de troia no exemplo — remoção de guard de autenticação embutida num PR de frete — é o tipo de mudança que passa despercebida quando o reviewer humano está focado só na lógica de negócio do diff.
       </aside>
     </section>
 
@@ -1095,7 +1097,7 @@ Confirme os caminhos de cada arquivo instalado.
       </div>
 
       <aside class="notes">
-        A beleza aqui é que você pode instalar tudo com um único prompt colado no Claude Code. Ele cria os três arquivos, nos lugares certos, com o conteúdo adequado. Se quiser partir dos arquivos prontos deste repo, é só copiar o .claude/ todo.
+        O prompt de instalação delega ao próprio Claude Code a tarefa de configurar o ambiente. Ele clona o repo, copia os arquivos e cria os diretórios necessários. A outra opção é copiar manualmente a pasta .claude/ deste repo para o projeto — ambas chegam no mesmo resultado.
       </aside>
     </section>
 
@@ -1127,7 +1129,7 @@ Confirme os caminhos de cada arquivo instalado.
       </div>
 
       <aside class="notes">
-        Encerramento. O review.md já está no repo — é só abrir e adaptar. Alguma dúvida sobre o fluxo ou como adaptar pro projeto de vocês?
+        Os arquivos estão no repo prontos para uso. A abordagem simples com /review funciona para qualquer stack como ponto de entrada. O /review-dual adiciona a separação técnico/negócio para equipes que querem mais profundidade. Qual das duas abordagens faz mais sentido para o contexto de vocês?
       </aside>
     </section>
 
