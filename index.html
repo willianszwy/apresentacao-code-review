@@ -599,8 +599,17 @@ Categorias: Contrato | Edge Case | Regra de Negócio | Dados/Segurança | Compor
           <p style="font-size:0.72em; margin:0;"><strong>O que eu faço com isso:</strong> corrijo o crítico na hora. Os demais eu avalio — alguns vão pro PR, outros pro backlog.</p>
         </div>
       </div>
+
+      <div class="highlight-box" style="margin-top:0.5em;">
+        <span style="font-size:0.62em; color:var(--blue); font-weight:700; text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:0.3em;">Prompt para instalar — cole no Claude Code na raiz do seu projeto</span>
+        <div class="prompt-box" style="font-size:0.6em; padding:0.35em 0.6em; margin:0; background:#0d1117;">Clone o repositório <span style="color:var(--amber)">https://github.com/willianszwy/apresentacao-code-review</span> em um
+diretório temporário e copie o arquivo <span style="color:var(--green)">.claude/commands/review.md</span>
+para a raiz deste projeto. Crie o diretório <span style="color:var(--amber)">.claude/commands/</span>
+se não existir. Confirme o caminho do arquivo instalado.</div>
+      </div>
+
       <aside class="notes">
-        Esse é o fluxo que rodo antes de abrir qualquer PR. O crítico eu corrijo na hora. Os médios e baixos eu decido se vale a pena agora ou coloco num tech debt. O reviewer humano quando abre o PR já não precisa checar as coisas óbvias.
+        Esse é o fluxo que rodo antes de abrir qualquer PR. O crítico eu corrijo na hora. Os médios e baixos eu decido se vale a pena agora ou coloco num tech debt. O reviewer humano quando abre o PR já não precisa checar as coisas óbvias. O prompt de instalação no final: basta colar no Claude Code que ele cria o arquivo no lugar certo.
       </aside>
     </section>
 
@@ -765,7 +774,333 @@ Categorias: Contrato | Edge Case | Regra de Negócio | Dados/Segurança | Compor
     </section>
 
     <!-- ═══════════════════════════════════════════════════
-         SLIDE 10 — ENCERRAMENTO
+         SLIDE 10 — NOVA ABORDAGEM: DOIS AGENTES
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>Nova abordagem <span class="badge badge-info">em teste</span> — dois agentes especializados</h2>
+      <p style="font-size:0.78em; color:var(--muted); margin-bottom:1em">O mesmo diff — analisado em paralelo por dois especialistas com focos completamente distintos:</p>
+
+      <!-- Diagrama de fluxo paralelo -->
+      <div style="display:flex; align-items:center; justify-content:center; gap:0.8rem; margin-bottom:1.1em;">
+        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+          <div class="flow-step s-blue" style="min-width:130px;">
+            <span class="step-label">entrada 1</span>
+            <span class="step-cmd">git diff<br>main…branch</span>
+          </div>
+          <div class="flow-step s-blue" style="min-width:130px;">
+            <span class="step-label">entrada 2</span>
+            <span class="step-cmd">gh pr view<br>--json body</span>
+          </div>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+          <div class="flow-step s-red" style="min-width:150px;">
+            <span class="step-label">agente 1</span>
+            <span class="step-cmd">code-reviewer</span>
+          </div>
+          <div class="flow-step s-green" style="min-width:150px;">
+            <span class="step-label">agente 2</span>
+            <span class="step-cmd">logic-reviewer</span>
+          </div>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-step s-green" style="border-width:2px; min-width:130px;">
+          <span class="step-label">saída</span>
+          <span class="step-cmd">2 relatórios<br>+ veredicto</span>
+        </div>
+      </div>
+
+      <!-- Cards descritivos -->
+      <div class="cols">
+        <div class="card card-red">
+          <h3 style="font-size:0.82em; margin-bottom:0.3em; color:var(--red);">code-reviewer</h3>
+          <p style="font-size:0.65em; color:var(--muted); margin-bottom:0.35em;">Técnico genérico — qualquer stack, qualquer linguagem</p>
+          <ul>
+            <li style="font-size:0.72em"><strong>Correctness:</strong> bugs silenciosos, race conditions, lógica invertida</li>
+            <li style="font-size:0.72em"><strong>Segurança:</strong> OWASP Top 10, credentials hardcoded, inputs sem sanitização</li>
+            <li style="font-size:0.72em"><strong>Performance:</strong> O(n²) em hot paths, memory leaks, chamadas bloqueantes</li>
+            <li style="font-size:0.72em"><strong>Testes:</strong> asserções tautológicas, mocks que divergem do comportamento real</li>
+          </ul>
+        </div>
+        <div class="card card-green">
+          <h3 style="font-size:0.82em; margin-bottom:0.3em; color:var(--green);">logic-reviewer</h3>
+          <p style="font-size:0.65em; color:var(--muted); margin-bottom:0.35em;">Lógica de negócio e integridade do PR</p>
+          <ul>
+            <li style="font-size:0.72em"><strong>PR vs. código real:</strong> intenção declarada vs. implementação efetiva</li>
+            <li style="font-size:0.72em"><strong>Cavalo de troia:</strong> código não relacionado embutido na mudança</li>
+            <li style="font-size:0.72em"><strong>Edge cases:</strong> nulls, listas vazias, valores limite, concorrência</li>
+            <li style="font-size:0.72em"><strong>Quebra de contrato:</strong> tipo de retorno, campos removidos, enums alterados</li>
+          </ul>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Diferença chave da abordagem anterior: code-reviewer é agnóstico de linguagem — funciona em Java, TypeScript, Go, Python — e não avalia negócio. O logic-reviewer ganhou um foco novo importante: detectar "cavalo de troia" — mudanças não relacionadas embutidas no PR sem menção na descrição. Os dois rodam em paralelo: o tempo total é o do mais lento, não a soma dos dois.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 11 — OS AGENTES: CODE-REVIEWER E LOGIC-REVIEWER
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>Os agentes em detalhe</h2>
+      <p style="font-size:0.78em; color:var(--muted); margin-bottom:0.7em">Cada agente vive em <code>.claude/agents/</code> — frontmatter define nome, model e tools disponíveis:</p>
+
+      <div class="cols">
+        <!-- code-reviewer -->
+        <div class="card card-red" style="padding:0.6em 0.8em;">
+          <div style="font-size:0.62em; color:var(--red); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.4em;">.claude/agents/code-reviewer.md</div>
+          <pre style="margin:0; background:var(--surface); border-radius:6px; padding:0.5em; overflow:auto; max-height:270px;"><code class="language-yaml" style="font-size:0.55em; line-height:1.4;">---
+name: code-reviewer
+description: Revisor técnico genérico multi-stack.
+  Analisa diffs focando em correctness, segurança,
+  performance e qualidade de testes.
+  Não avalia lógica de negócio.
+tools: Glob, Grep, LS, Read, WebFetch, WebSearch
+model: sonnet
+color: red
+---
+
+Você é um revisor técnico sênior generalista.
+Detecte automaticamente a linguagem e o stack.
+
+Analisa:
+- Correctness: bugs silenciosos, race conditions,
+  lógica invertida, estado mutável compartilhado
+- Segurança: OWASP Top 10, credenciais hardcoded,
+  inputs externos não sanitizados
+- Performance: O(n²) em hot paths, memory leaks,
+  chamadas bloqueantes, recursos não liberados
+- Testes: asserções tautológicas, mocks que divergem
+  do comportamento real da dependência
+
+NÃO avalia: lógica de negócio, formatação, naming.
+
+Severidades: CRITICO | MEDIO | BAIXO</code></pre>
+        </div>
+
+        <!-- logic-reviewer -->
+        <div class="card card-green" style="padding:0.6em 0.8em;">
+          <div style="font-size:0.62em; color:var(--green); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.4em;">.claude/agents/logic-reviewer.md</div>
+          <pre style="margin:0; background:var(--surface); border-radius:6px; padding:0.5em; overflow:auto; max-height:270px;"><code class="language-yaml" style="font-size:0.55em; line-height:1.4;">---
+name: logic-reviewer
+description: Revisor de lógica de negócio e contratos.
+  Valida comportamento implementado vs. intenção do PR,
+  detecta edge cases, quebra de contrato e código
+  não relacionado embutido na mudança.
+model: claude-sonnet-4-6
+---
+
+Você analisa lógica de negócio, contratos e
+integridade do PR. Não avalie qualidade técnica.
+
+Foca em:
+- PR vs. conteúdo real: divergência entre intenção
+  declarada e implementação efetiva
+- Cavalo de troia: mudanças não relacionadas ao
+  objetivo do PR embutidas silenciosamente
+- Edge cases: nulls, listas vazias, valores limite,
+  concorrência de estado, datas passado/futuro
+- Quebra de contrato: tipo de retorno, campos
+  removidos, enums ou status alterados
+- Regras de negócio: invariantes violadas,
+  autorização ausente, fluxos de estado inválidos
+
+NÃO avalia: performance, idiomas, estilo de código.</code></pre>
+        </div>
+      </div>
+
+      <div class="highlight-box" style="margin-top:0.5em; font-size:0.73em;">
+        <strong class="amber">Ponto chave:</strong> os dois system prompts são <strong>complementares e sem sobreposição</strong> — um nunca teria achado o que o outro encontra. Isso reduz ruído e torna cada relatório mais preciso.
+      </div>
+
+      <aside class="notes">
+        O campo description é o que o Claude Code usa para decidir quando chamar o agente automaticamente. Mas no /review-dual os chamamos explicitamente. O tools do code-reviewer é restrito — ele não precisa de Agent ou Write. O logic-reviewer usa o modelo padrão do projeto. A separação de responsabilidades é total: um não pisa no outro.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 12 — O COMANDO /review-dual
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>O comando <span class="amber">/review-dual</span></h2>
+
+      <div class="cols" style="align-items:start;">
+        <!-- Esquerda: arquivo do comando -->
+        <div>
+          <div style="font-size:0.62em; color:var(--muted); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.4em;">.claude/commands/review-dual.md</div>
+          <pre style="margin:0; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:0.6em; overflow:auto; max-height:320px;"><code class="language-markdown" style="font-size:0.5em; line-height:1.45;">## Passo 1 — Obter o diff
+
+$ARGUMENTS pode ser: branch, PR #, link do PR ou
+vazio (usa HEAD~1..HEAD)
+
+Execute em paralelo:
+- gh pr view $ARGUMENTS --json title,body,...
+- git fetch origin; git diff origin/main...$ARGUMENTS
+
+Antes de acionar os agentes, mostre:
+  Arquivos alterados: N
+  Linhas: +N / -N
+  Descrição do PR: [obtida / não disponível]
+
+## Passo 2 — Acionar os dois agentes em paralelo
+
+Dispare simultaneamente com diff + descrição do PR:
+
+**Agente 1 — code-reviewer**
+Analise focando em problemas técnicos: correctness,
+segurança, performance e qualidade de testes.
+Ignore lógica de negócio.
+
+**Agente 2 — logic-reviewer**
+Analise focando em lógica de negócio, edge cases,
+quebra de contrato e código não relacionado
+embutido na mudança (cavalo de troia).
+
+## Passo 3 — Apresentar os resultados
+
+1. Relatório do code-reviewer (completo)
+2. Relatório do logic-reviewer (completo)
+3. Tabela consolidada de severidade:
+
+| Severidade  | code-reviewer | logic-reviewer | Total |
+|-------------|:---:|:---:|:---:|
+| 🔴 Crítico  |  N  |  N  |  N  |
+| 🟡 Médio    |  N  |  N  |  N  |
+| 🟢 Baixo    |  N  |  N  |  N  |
+
+4. Veredicto: PODE FAZER MERGE ou NÃO FAZER MERGE
+   (não fazer merge se houver qualquer 🔴 crítico)</code></pre>
+        </div>
+
+        <!-- Direita: terminal + achados -->
+        <div>
+          <div class="terminal" style="font-size:0.5em;">
+            <div class="terminal-bar">
+              <div class="terminal-dot r"></div>
+              <div class="terminal-dot y"></div>
+              <div class="terminal-dot g"></div>
+              <span class="terminal-title">bash — ~/projects/meu-servico</span>
+            </div>
+            <div class="terminal-body">
+              <div><span class="t-prompt">$ </span><span class="t-cmd">claude /review-dual feature/frete-v2</span></div>
+              <div style="margin-top:0.3em"><span class="t-info">⚙  Coletando diff e descrição do PR...</span></div>
+              <div><span class="t-muted">   Arquivos: 4 · +91 linhas · -37 linhas</span></div>
+              <div><span class="t-muted">   Descrição do PR: obtida via gh cli</span></div>
+              <div style="margin-top:0.3em"><span class="t-info">◆  [code-reviewer]  analisando em paralelo...</span></div>
+              <div><span class="t-info">◆  [logic-reviewer] analisando em paralelo...</span></div>
+              <div style="margin-top:0.3em; border-top:1px solid #334155; padding-top:0.3em;"><span style="color:var(--red); font-weight:700;">═══ CODE-REVIEWER ═══════════════════</span></div>
+              <div><span style="color:#fca5a5;">🔴 CRÍTICO [Segurança] AuthService.java:112</span></div>
+              <div><span class="t-muted">   Input não sanitizado usado em query SQL</span></div>
+              <div><span style="color:#fcd34d;">🟡 MÉDIO   [Performance] OrderRepo.java:78</span></div>
+              <div><span class="t-muted">   O(n²) — loop com chamada ao repositório</span></div>
+              <div style="margin-top:0.3em; border-top:1px solid #334155; padding-top:0.3em;"><span style="color:var(--green); font-weight:700;">═══ LOGIC-REVIEWER ══════════════════</span></div>
+              <div><span style="color:#fca5a5;">🔴 CRÍTICO [Cavalo de Troia] config/security.js:8</span></div>
+              <div><span class="t-muted">   PR declara "frete" mas remove guard de autenticação</span></div>
+              <div><span style="color:#86efac;">🟢 BAIXO   [Contrato] FreightService.java:23</span></div>
+              <div><span class="t-muted">   Tipo de retorno alterado — pode quebrar consumidores</span></div>
+              <div style="margin-top:0.3em; border-top:1px solid #334155; padding-top:0.3em; color:var(--red); font-weight:700;">⛔ NÃO FAZER MERGE — 2 críticos encontrados</div>
+              <div><span class="t-prompt">$ </span><span class="t-cursor"></span></div>
+            </div>
+          </div>
+
+          <div class="cols" style="margin-top:0.5em; gap:0.5rem;">
+            <div class="card card-red" style="padding:0.4em 0.6em;">
+              <div style="font-size:0.6em; color:var(--red); font-weight:700; margin-bottom:0.2em;">code-reviewer encontrou</div>
+              <div style="font-size:0.62em; color:var(--muted);">SQL injection + N+1 — invisíveis para revisão de negócio</div>
+            </div>
+            <div class="card card-green" style="padding:0.4em 0.6em;">
+              <div style="font-size:0.6em; color:var(--green); font-weight:700; margin-bottom:0.2em;">logic-reviewer encontrou</div>
+              <div style="font-size:0.62em; color:var(--muted);">Guard removido sem menção + quebra de contrato — invisíveis para revisor técnico</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="notes">
+        O veredicto final é automático: qualquer crítico de qualquer agente bloqueia o merge. Não preciso decidir — o fluxo decide por mim. O "cavalo de troia" que o logic-reviewer detectou aqui — remoção de guard de autenticação num PR de frete — é exatamente o tipo de coisa que passa despercebida numa revisão manual quando o reviewer está focado só no diff de negócio.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 13 — COMO INSTALAR A ABORDAGEM COM 2 AGENTES
+    ════════════════════════════════════════════════════ -->
+    <section>
+      <h2>Como instalar — abordagem com 2 agentes</h2>
+      <p style="font-size:0.78em; color:var(--muted); margin-bottom:0.7em">Três arquivos para criar. Você pode fazer manualmente ou usar o prompt abaixo para deixar o Claude configurar tudo:</p>
+
+      <div class="cols" style="align-items:start; gap:1rem;">
+        <!-- Esquerda: passos manuais -->
+        <div style="display:flex; flex-direction:column; gap:0.45em;">
+          <div class="cta-step">
+            <div class="num">1</div>
+            <div class="content">
+              <strong>Criar <code>.claude/agents/code-reviewer.md</code></strong>
+              <span>Agente técnico genérico — correctness, segurança, performance, testes</span>
+            </div>
+          </div>
+          <div class="cta-step">
+            <div class="num">2</div>
+            <div class="content">
+              <strong>Criar <code>.claude/agents/logic-reviewer.md</code></strong>
+              <span>Agente de negócio — contratos, edge cases, cavalo de troia</span>
+            </div>
+          </div>
+          <div class="cta-step">
+            <div class="num">3</div>
+            <div class="content">
+              <strong>Criar <code>.claude/commands/review-dual.md</code></strong>
+              <span>O slash command que dispara os dois em paralelo</span>
+            </div>
+          </div>
+          <div class="cta-step">
+            <div class="num">4</div>
+            <div class="content">
+              <strong>Testar com uma branch ou PR</strong>
+              <span><code>claude /review-dual feature/minha-branch</code> ou <code>claude /review-dual 42</code></span>
+            </div>
+            <div class="deadline">Pronto</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--blue); margin-top:0.1em; padding:0.4em 0.7em;">
+            <p style="font-size:0.67em; margin:0; color:var(--muted)">Os arquivos completos estão neste repo em <code>.claude/</code> — é só copiar para o seu projeto.</p>
+          </div>
+        </div>
+
+        <!-- Direita: prompt de instalação automática -->
+        <div>
+          <div style="font-size:0.62em; color:var(--blue); font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.4em;">Ou cole este prompt no Claude Code — ele instala tudo:</div>
+          <div class="prompt-box" style="font-size:0.56em; line-height:1.55;">
+            <span class="label">Prompt de instalação — raiz do projeto</span>
+Clone o repositório
+<span style="color:var(--amber)">https://github.com/willianszwy/apresentacao-code-review</span>
+em um diretório temporário e instale neste projeto:
+
+<span style="color:var(--red)">- .claude/agents/code-reviewer.md</span>
+<span style="color:var(--green)">- .claude/agents/logic-reviewer.md</span>
+<span style="color:var(--amber)">- .claude/commands/review-dual.md</span>
+
+Crie os diretórios <span style="color:var(--amber)">.claude/agents/</span> e
+<span style="color:var(--amber)">.claude/commands/</span> se não existirem.
+Não sobrescreva arquivos existentes sem perguntar.
+Confirme os caminhos de cada arquivo instalado.
+          </div>
+          <div class="card" style="border-left:3px solid var(--muted); margin-top:0.5em; padding:0.4em 0.7em;">
+            <p style="font-size:0.65em; margin:0; color:var(--muted)">O Claude Code clona, copia e cria os diretórios automaticamente — sem precisar fazer nada manualmente.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="notes">
+        A beleza aqui é que você pode instalar tudo com um único prompt colado no Claude Code. Ele cria os três arquivos, nos lugares certos, com o conteúdo adequado. Se quiser partir dos arquivos prontos deste repo, é só copiar o .claude/ todo.
+      </aside>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════
+         SLIDE 14 — ENCERRAMENTO
     ════════════════════════════════════════════════════ -->
     <section class="title-slide" style="display:flex; flex-direction:column; justify-content:center; height:100%;">
       <div style="margin-bottom:1.6em;">
