@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Fluxo de Code Review com IA</title>
+  <title>Fluxo de Code Review com IA</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -299,12 +299,12 @@
       <div style="margin-bottom: 0.8rem;">
         <span style="font-size:3em;">⚙️</span>
       </div>
-      <h1>Meu Fluxo de <span class="amber">Code Review</span><br>com <span class="blue">IA</span></h1>
-      <p class="subtitle">Como uso o Claude pra me ajudar a revisar código da nossa stack</p>
+      <h1>Fluxo de <span class="amber">Code Review</span><br>com <span class="blue">IA</span></h1>
+      <p class="subtitle">Como usar o Claude para revisar código — qualquer stack</p>
       <div class="tagline">
         Qualquer stack &nbsp;·&nbsp; Contratos &nbsp;·&nbsp; Edge Cases &nbsp;·&nbsp; Regras de Negócio &nbsp;·&nbsp; Claude Code CLI
       </div>
-      <p class="presenter">Pressione <code>→</code> para navegar &nbsp;·&nbsp; <code>S</code> para Speaker View &nbsp;·&nbsp; <code>F</code> para tela cheia</p>
+      <p class="presenter">Pressione <code>→</code> para navegar &nbsp;·&nbsp; <code>F</code> para tela cheia</p>
       <aside class="notes">
         Quero compartilhar um fluxo que montei pro meu próprio uso. Não é uma proposta formal — é só o que eu descobri que funciona bem pra mim. Se fizer sentido pra alguém do time, ótimo. Qualquer dúvida me falem depois.
       </aside>
@@ -314,10 +314,10 @@
          SLIDE 2 — O PROBLEMA DO REVIEW MANUAL
     ════════════════════════════════════════════════════ -->
     <section>
-      <h2>O que me fez querer isso</h2>
+      <h2>Por que automatizar o review?</h2>
       <div class="cols">
         <div>
-          <h3>O que eu percebi perdendo no review</h3>
+          <h3>O que se perde no review manual</h3>
           <ul>
             <li>Focava no <em>como</em> o código foi escrito — perdia o <em>o que</em> ele deveria fazer</li>
             <li>Edge cases sutis passavam: e se o dado vier nulo? e se a chamada falhar?</li>
@@ -330,7 +330,7 @@
           </div>
         </div>
         <div>
-          <h3>O que eu queria automatizar</h3>
+          <h3>O que faz sentido automatizar</h3>
           <div class="card card-blue" style="margin-bottom:0.5em">
             <p style="font-size:0.75em; margin:0 0 0.3em 0; color:var(--muted)">Uma leitura que cobrisse sempre:</p>
             <ul>
@@ -355,7 +355,7 @@
     ════════════════════════════════════════════════════ -->
     <section>
       <h2>Como o fluxo funciona</h2>
-      <p style="font-size:0.78em; color:var(--muted); margin-bottom:1.2em">Um comando no terminal — cinco etapas automáticas — e eu tenho o review na tela:</p>
+      <p style="font-size:0.78em; color:var(--muted); margin-bottom:1.2em">Um comando no terminal — cinco etapas automáticas — e o review está na tela:</p>
 
       <div class="flow" style="margin-bottom: 1.4em;">
         <div class="flow-step s-amber">
@@ -395,7 +395,7 @@
           </ul>
         </div>
         <div class="card card-blue">
-          <h3 style="font-size:0.85em; margin-bottom:0.4em;">O que eu faço</h3>
+          <h3 style="font-size:0.85em; margin-bottom:0.4em;">Como usar</h3>
           <div class="terminal" style="margin-top:0.3em">
             <div class="terminal-bar">
               <div class="terminal-dot r"></div>
@@ -420,7 +420,7 @@
          SLIDE 4 — O AGENTE ESPECIALIZADO
     ════════════════════════════════════════════════════ -->
     <section>
-      <h2>O Agente que eu Configurei</h2>
+      <h2>O Agente Especializado</h2>
       <p style="font-size:0.78em; color:var(--muted); margin-bottom:0.8em">O system prompt define o foco — agnóstico de linguagem, centrado no comportamento:</p>
       <div class="cols">
         <div>
@@ -522,7 +522,7 @@ Categorias: Contrato | Edge Case | Regra de Negócio | Dados/Segurança | Compor
          SLIDE 6 — EXEMPLO DE OUTPUT
     ════════════════════════════════════════════════════ -->
     <section>
-      <h2>O que eu recebo de volta</h2>
+      <h2>Output do review</h2>
       <p style="font-size:0.75em; color:var(--muted); margin-bottom:0.7em">Exemplo de output após <code>claude /review feature/calculo-frete</code> — PR com descrição clara da intenção:</p>
 
       <div class="review-block">
@@ -563,18 +563,18 @@ Categorias: Contrato | Edge Case | Regra de Negócio | Dados/Segurança | Compor
          SLIDE 7 — DEMO FLOW COMPLETO
     ════════════════════════════════════════════════════ -->
     <section>
-      <h2>Na prática — como eu uso</h2>
-      <p style="font-size:0.75em; color:var(--muted); margin-bottom:0.7em">Antes de abrir qualquer PR, rodo isso no terminal:</p>
+      <h2>Na prática — como usar</h2>
+      <p style="font-size:0.75em; color:var(--muted); margin-bottom:0.7em">Antes de abrir qualquer PR, rode isso no terminal:</p>
 
       <div class="terminal">
         <div class="terminal-bar">
           <div class="terminal-dot r"></div>
           <div class="terminal-dot y"></div>
           <div class="terminal-dot g"></div>
-          <span class="terminal-title">bash — ~/projects/meu-projeto</span>
+          <span class="terminal-title">bash — ~/projects/servico</span>
         </div>
         <div class="terminal-body">
-          <div><span class="t-prompt">~/projects/meu-servico $</span> <span class="t-cmd">claude /review feature/calculo-frete</span></div>
+          <div><span class="t-prompt">~/projects/servico $</span> <span class="t-cmd">claude /review feature/calculo-frete</span></div>
           <div style="margin-top:0.3em"><span class="t-info">⚙  Executando slash command: review</span></div>
           <div><span class="t-info">⟳  git fetch origin</span> <span class="t-muted">— atualizando refs remotas...</span></div>
           <div><span class="t-info">⟳  git diff origin/develop...origin/feature/calculo-frete</span></div>
@@ -587,7 +587,7 @@ Categorias: Contrato | Edge Case | Regra de Negócio | Dados/Segurança | Compor
           <div style="margin-top:0.2em"><span style="color:#86efac;">🟢 BAIXO   [Contrato]          FreightService.java:23</span></div>
           <div><span class="t-muted">   Tipo de retorno alterado — pode quebrar consumidores existentes</span></div>
           <div style="margin-top:0.3em"><span class="t-info">✓  Review concluído — 3 itens (1 crítico, 1 médio, 1 baixo)</span></div>
-          <div><span class="t-prompt">~/projects/meu-servico $</span> <span class="t-cursor"></span></div>
+          <div><span class="t-prompt">~/projects/servico $</span> <span class="t-cursor"></span></div>
         </div>
       </div>
 
@@ -596,7 +596,7 @@ Categorias: Contrato | Edge Case | Regra de Negócio | Dados/Segurança | Compor
           <p style="font-size:0.72em; margin:0;"><strong>Tempo total:</strong> ~15 segundos do comando ao output completo, incluindo fetch e análise do diff.</p>
         </div>
         <div class="card card-amber">
-          <p style="font-size:0.72em; margin:0;"><strong>O que eu faço com isso:</strong> corrijo o crítico na hora. Os demais eu avalio — alguns vão pro PR, outros pro backlog.</p>
+          <p style="font-size:0.72em; margin:0;"><strong>O que fazer com isso:</strong> corrija o crítico antes de abrir o PR. Os demais avalie — alguns vão pro PR, outros pro backlog.</p>
         </div>
       </div>
 
@@ -617,7 +617,7 @@ se não existir. Confirme o caminho do arquivo instalado.</div>
          SLIDE 8 — COMO REPLICAR
     ════════════════════════════════════════════════════ -->
     <section>
-      <h2>Como eu montei — se quiserem tentar</h2>
+      <h2>Como montar — passo a passo</h2>
       <p style="font-size:0.78em; color:var(--muted); margin-bottom:0.8em">Leva menos de 10 minutos. Só precisa do <strong>Claude Code CLI</strong> instalado.</p>
 
       <div class="cols">
@@ -673,7 +673,7 @@ se não existir. Confirme o caminho do arquivo instalado.</div>
           </ul>
           <div class="highlight-box" style="margin-top:0.8em">
             <p style="margin:0; font-size:0.78em; color:var(--text)">
-              <strong class="amber">Dica:</strong> eu commito o <code>.claude/commands/review.md</code> no repo — assim quem quiser usar já encontra lá, sem precisar pedir pra mim.
+              <strong class="amber">Dica:</strong> commite o <code>.claude/commands/review.md</code> no repo — assim quem quiser usar já encontra lá, sem precisar pedir pra mim.
             </p>
           </div>
         </div>
@@ -687,7 +687,7 @@ se não existir. Confirme o caminho do arquivo instalado.</div>
          SLIDE 9 — OUTRAS PERGUNTAS ÚTEIS
     ════════════════════════════════════════════════════ -->
     <section>
-      <h2>Outras perguntas que uso no review</h2>
+      <h2>Outras perguntas úteis no review</h2>
 
       <div class="cols-3" style="gap:0.6rem;">
 
@@ -984,7 +984,7 @@ embutido na mudança (cavalo de troia).
               <div class="terminal-dot r"></div>
               <div class="terminal-dot y"></div>
               <div class="terminal-dot g"></div>
-              <span class="terminal-title">bash — ~/projects/meu-servico</span>
+              <span class="terminal-title">bash — ~/projects/servico</span>
             </div>
             <div class="terminal-body">
               <div><span class="t-prompt">$ </span><span class="t-cmd">claude /review-dual feature/frete-v2</span></div>
@@ -1105,8 +1105,8 @@ Confirme os caminhos de cada arquivo instalado.
     <section class="title-slide" style="display:flex; flex-direction:column; justify-content:center; height:100%;">
       <div style="margin-bottom:1.6em;">
         <div style="font-size:0.72em; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.6em;">Conclusão</div>
-        <h1 style="font-size:1.8em; line-height:1.2; margin:0;">Isso é o que <span class="amber">funciona pra mim.</span></h1>
-        <p style="font-size:0.85em; color:var(--muted); margin-top:0.6em;">Se quiserem explorar também, fico feliz em ajudar.</p>
+        <h1 style="font-size:1.8em; line-height:1.2; margin:0;">Uma abordagem que <span class="amber">vale experimentar.</span></h1>
+        <p style="font-size:0.85em; color:var(--muted); margin-top:0.6em;">Simples de instalar e adaptar para qualquer projeto.</p>
       </div>
 
       <div style="display:flex; gap:1.2rem; justify-content:center; margin-bottom:2em;">
