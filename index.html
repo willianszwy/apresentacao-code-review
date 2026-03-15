@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meu Fluxo de Code Review com IA</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reset.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reveal.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/theme/moon.min.css">
@@ -12,21 +16,21 @@
 
   <style>
     :root {
-      --bg: #1c2138;
-      --amber: #FFE600;
-      --blue: #5ba4f5;
-      --green: #2ecc7a;
-      --red: #f5677a;
-      --yellow: #FFE600;
-      --text: #eef0f8;
-      --muted: #b0b8d8;
-      --surface: #252d4a;
-      --border: #36406a;
+      --bg: #0d0f17;
+      --amber: #7c6ef5;
+      --blue: #4fc4cf;
+      --green: #3dd68c;
+      --red: #ff6b81;
+      --yellow: #7c6ef5;
+      --text: #e8ecf7;
+      --muted: #7d89b0;
+      --surface: #161926;
+      --border: #2a2f47;
     }
 
     .reveal-viewport { background: var(--bg); }
     .reveal .slides { text-align: left; }
-    .reveal { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--text); font-size: 26px; }
+    .reveal { font-family: 'Inter', system-ui, sans-serif; color: var(--text); font-size: 26px; }
 
     /* Gradient accent line — amarelo MP */
     .reveal .slides section::before {
@@ -96,14 +100,14 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-    .badge-critical { background: #5c1020; color: #ffb3bc; }
-    .badge-medium   { background: #3d3000; color: #ffe966; }
-    .badge-low      { background: #003d1f; color: #5de8a0; }
-    .badge-info     { background: #0d2666; color: #90c2ff; }
+    .badge-critical { background: #2d0f1a; color: #ff9aaa; }
+    .badge-medium   { background: #1e1535; color: #b8acf8; }
+    .badge-low      { background: #0d2418; color: #5de8a0; }
+    .badge-info     { background: #0e2030; color: #6dd9e0; }
 
     /* Highlight box */
     .highlight-box {
-      background: linear-gradient(135deg, rgba(255,230,0,0.1), rgba(52,131,250,0.1));
+      background: linear-gradient(135deg, rgba(124,110,245,0.12), rgba(79,196,207,0.1));
       border: 1px solid var(--amber);
       border-radius: 6px;
       padding: 0.4em 0.8em;
@@ -128,9 +132,9 @@
       font-size: 0.52em;
     }
     .reveal pre code { padding: 0.5em 0.8em; border-radius: 6px; max-height: 220px; overflow-y: auto; }
-    .reveal code { font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; }
+    .reveal code { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace; }
     .reveal p code, .reveal li code {
-      background: #1a2545; color: #90c2ff;
+      background: #1a1d2e; color: #a99ef7;
       padding: 0.1em 0.4em; border-radius: 4px; font-size: 0.88em;
     }
 
@@ -160,7 +164,7 @@
       margin-bottom: 0.2em;
     }
     .flow-step .step-cmd {
-      font-family: 'Cascadia Code', monospace;
+      font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
       font-size: 0.95em;
     }
     .flow-step.s-amber { border-color: var(--amber); }
@@ -175,14 +179,14 @@
 
     /* Terminal fake */
     .terminal {
-      background: #131829;
+      background: #0c0e18;
       border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
-      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
     }
     .terminal-bar {
-      background: #1a2140;
+      background: #131525;
       padding: 0.4em 0.8em;
       display: flex;
       align-items: center;
@@ -193,12 +197,12 @@
     .terminal-dot.r { background: #ef4444; }
     .terminal-dot.y { background: #facc15; }
     .terminal-dot.g { background: #22c55e; }
-    .terminal-title { font-size: 0.65em; color: var(--muted); margin-left: auto; margin-right: auto; font-family: 'Segoe UI', sans-serif; }
-    .terminal-body { padding: 0.5em 0.8em; font-size: 0.58em; line-height: 1.5; color: #cbd5e1; }
+    .terminal-title { font-size: 0.65em; color: var(--muted); margin-left: auto; margin-right: auto; font-family: 'Inter', sans-serif; }
+    .terminal-body { padding: 0.5em 0.8em; font-size: 0.58em; line-height: 1.5; color: #b8c0d8; }
     .terminal-body .t-prompt { color: var(--green); }
     .terminal-body .t-cmd    { color: var(--text); }
     .terminal-body .t-info   { color: var(--blue); }
-    .terminal-body .t-warn   { color: var(--yellow); }
+    .terminal-body .t-warn   { color: var(--amber); }
     .terminal-body .t-err    { color: var(--red); }
     .terminal-body .t-muted  { color: var(--muted); }
     .terminal-body .t-cursor { display: inline-block; width: 8px; height: 1em; background: var(--text); vertical-align: text-bottom; animation: blink 1s step-end infinite; }
@@ -206,12 +210,12 @@
 
     /* Output review block */
     .review-block {
-      background: #131829;
+      background: #0c0e18;
       border: 1px solid var(--border);
       border-radius: 6px;
       padding: 0.45em 0.7em;
       font-size: 0.57em;
-      font-family: 'Cascadia Code', monospace;
+      font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
       line-height: 1.5;
     }
     .rv-header { color: var(--blue); font-weight: 700; margin-bottom: 0.2em; }
@@ -220,7 +224,7 @@
     .rv-med    { color: #fcd34d; }
     .rv-low    { color: #86efac; }
     .rv-file   { color: var(--muted); font-style: italic; }
-    .rv-label  { font-family: 'Segoe UI', sans-serif; font-weight: 700; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; }
+    .rv-label  { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; }
     .rv-code   { color: #c9d1d9; margin-left: 1em; }
 
     /* CTA steps */
@@ -259,7 +263,7 @@
       border-radius: 6px;
       padding: 0.4em 0.7em;
       font-size: 0.62em;
-      font-family: 'Cascadia Code', monospace;
+      font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
       color: #cbd5e1;
       line-height: 1.45;
     }
@@ -267,7 +271,7 @@
       font-size: 0.72em; font-weight: 700;
       color: var(--blue); text-transform: uppercase;
       letter-spacing: 0.08em; margin-bottom: 0.2em;
-      display: block; font-family: 'Segoe UI', sans-serif;
+      display: block; font-family: 'Inter', sans-serif;
     }
 
     /* Slide number */
@@ -761,39 +765,34 @@ Categorias: Contrato | Edge Case | Regra de Negócio | Dados/Segurança | Compor
     </section>
 
     <!-- ═══════════════════════════════════════════════════
-         SLIDE 10 — PRÓXIMOS PASSOS
+         SLIDE 10 — ENCERRAMENTO
     ════════════════════════════════════════════════════ -->
-    <section>
-      <h2>O que eu quero tentar a seguir</h2>
-      <p style="font-size:0.78em; color:var(--muted); margin-bottom:0.8em">O fluxo atual já me ajuda. Essas são as evoluções que tenho vontade de explorar:</p>
+    <section class="title-slide" style="display:flex; flex-direction:column; justify-content:center; height:100%;">
+      <div style="margin-bottom:1.6em;">
+        <div style="font-size:0.72em; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.6em;">Conclusão</div>
+        <h1 style="font-size:1.8em; line-height:1.2; margin:0;">Isso é o que <span class="amber">funciona pra mim.</span></h1>
+        <p style="font-size:0.85em; color:var(--muted); margin-top:0.6em;">Se quiserem explorar também, fico feliz em ajudar.</p>
+      </div>
 
-      <div class="cols" style="gap:1rem; align-items:start; margin-bottom:0.8em;">
-        <div class="card card-amber">
-          <h3 style="font-size:0.88em; color:var(--amber); margin-bottom:0.5em;">🪝 Hook pre-push</h3>
-          <p style="font-size:0.73em; margin:0 0 0.5em 0; color:var(--text)">Rodar o review automaticamente antes de todo <code>git push</code> — sem precisar lembrar de chamar o comando manualmente.</p>
-          <pre style="font-size:0.7em;"><code class="language-bash"># .git/hooks/pre-push
-#!/bin/bash
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
-claude /review $BRANCH</code></pre>
+      <div style="display:flex; gap:1.2rem; justify-content:center; margin-bottom:2em;">
+        <div class="card" style="padding:0.55em 1em; border-left:3px solid var(--amber); min-width:160px;">
+          <span style="font-size:0.62em; color:var(--muted); display:block; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.2em;">ponto de partida</span>
+          <code style="font-size:0.75em; color:var(--amber);">review.md</code>
+          <span style="font-size:0.62em; color:var(--muted); display:block; margin-top:0.15em;">já está no repo</span>
         </div>
-        <div class="card card-green">
-          <h3 style="font-size:0.88em; color:var(--green); margin-bottom:0.5em;">📊 Métricas de review</h3>
-          <p style="font-size:0.73em; margin:0 0 0.4em 0; color:var(--text)">Entender se o fluxo realmente faz diferença ao longo do tempo:</p>
-          <ul>
-            <li style="font-size:0.72em">Categorias mais recorrentes → onde o time erra mais</li>
-            <li style="font-size:0.72em">Críticos encontrados antes vs. depois do merge</li>
-            <li style="font-size:0.72em">Evolução do prompt a partir dos falsos negativos</li>
-          </ul>
+        <div class="card" style="padding:0.55em 1em; border-left:3px solid var(--blue); min-width:160px;">
+          <span style="font-size:0.62em; color:var(--muted); display:block; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.2em;">ferramenta</span>
+          <code style="font-size:0.75em; color:var(--blue);">Claude Code CLI</code>
+          <span style="font-size:0.62em; color:var(--muted); display:block; margin-top:0.15em;">claude.ai/code</span>
         </div>
       </div>
 
-      <div class="highlight-box" style="text-align:center;">
-        <strong style="font-size:0.88em; color:var(--text)">Isso é o que funciona pra mim.<br>Se quiserem explorar também, fico feliz em ajudar.</strong>
-        <p style="margin:0.4em 0 0 0; font-size:0.8em; color:var(--muted)">O <code>review.md</code> já está no repo — é só abrir e adaptar.</p>
-        <p style="margin:0.3em 0 0 0; font-size:0.85em;"><strong class="amber">Perguntas?</strong></p>
+      <div style="border-top:1px solid var(--border); padding-top:1.2em;">
+        <p style="font-size:1.1em; font-weight:700; color:var(--text); margin:0;">Perguntas?</p>
       </div>
+
       <aside class="notes">
-        O hook pre-push é o que mais tenho vontade de tentar — tirar o atrito de lembrar de rodar. As métricas seriam bacanas pra ver se o prompt está evoluindo na direção certa. Alguma dúvida sobre o fluxo ou como adaptar pro projeto de vocês?
+        Encerramento. O review.md já está no repo — é só abrir e adaptar. Alguma dúvida sobre o fluxo ou como adaptar pro projeto de vocês?
       </aside>
     </section>
 
